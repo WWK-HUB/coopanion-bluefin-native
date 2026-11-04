@@ -1,0 +1,736 @@
+{
+  "errors": [],
+  "words": [
+    {
+      "word": "neutral",
+      "accepted": true,
+      "poses": [
+        "neutral",
+        "closed"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "happy",
+      "accepted": true,
+      "poses": [
+        "talk",
+        "happy",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "wink",
+      "accepted": true,
+      "poses": [
+        "talk",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "love",
+      "accepted": true,
+      "poses": [
+        "love",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "shy",
+      "accepted": true,
+      "poses": [
+        "shy",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "surprised",
+      "accepted": true,
+      "poses": [
+        "jump",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "angry",
+      "accepted": true,
+      "poses": [
+        "angry",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "sad",
+      "accepted": true,
+      "poses": [
+        "sad",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "sleepy",
+      "accepted": true,
+      "poses": [
+        "sit_happy",
+        "closed"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "thinking",
+      "accepted": true,
+      "poses": [
+        "thinking",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "smug",
+      "accepted": true,
+      "poses": [
+        "smug",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "pout",
+      "accepted": true,
+      "poses": [
+        "angry",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "worried",
+      "accepted": true,
+      "poses": [
+        "sad",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "determined",
+      "accepted": true,
+      "poses": [
+        "smug",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "flustered",
+      "accepted": true,
+      "poses": [
+        "shy",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "scared",
+      "accepted": true,
+      "poses": [
+        "sad",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "excited",
+      "accepted": true,
+      "poses": [
+        "happy",
+        "excited",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "cry",
+      "accepted": true,
+      "poses": [
+        "cry",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "confused",
+      "accepted": true,
+      "poses": [
+        "thinking",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "stand",
+      "accepted": true,
+      "poses": [
+        "neutral",
+        "closed"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "jump",
+      "accepted": true,
+      "poses": [
+        "crouch",
+        "jump",
+        "neutral",
+        "closed"
+      ],
+      "modes": [
+        "crouch",
+        "air",
+        "land",
+        "idle"
+      ]
+    },
+    {
+      "word": "hop",
+      "accepted": true,
+      "poses": [
+        "crouch",
+        "jump",
+        "neutral",
+        "closed"
+      ],
+      "modes": [
+        "crouch",
+        "air",
+        "land",
+        "idle"
+      ]
+    },
+    {
+      "word": "look",
+      "accepted": true,
+      "poses": [
+        "shake_0",
+        "shake_2",
+        "neutral"
+      ],
+      "modes": [
+        "look",
+        "idle"
+      ]
+    },
+    {
+      "word": "turn",
+      "accepted": true,
+      "poses": [
+        "side",
+        "neutral",
+        "closed"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "nod",
+      "accepted": true,
+      "poses": [
+        "nod_0",
+        "nod_1",
+        "nod_2",
+        "nod_3",
+        "neutral",
+        "closed"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "shake",
+      "accepted": true,
+      "poses": [
+        "shake_1",
+        "shake_0",
+        "shake_2",
+        "shake_3",
+        "neutral",
+        "closed"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "spin",
+      "accepted": true,
+      "poses": [
+        "neutral",
+        "side",
+        "back",
+        "closed"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "sit",
+      "accepted": true,
+      "poses": [
+        "crouch",
+        "sit"
+      ],
+      "modes": [
+        "sit"
+      ]
+    },
+    {
+      "word": "sleep",
+      "accepted": true,
+      "poses": [
+        "sit",
+        "prone",
+        "sleep"
+      ],
+      "modes": [
+        "sleep"
+      ]
+    },
+    {
+      "word": "dizzy",
+      "accepted": true,
+      "poses": [
+        "fall",
+        "dizzy_0",
+        "dizzy_1",
+        "dizzy_2",
+        "dizzy_3",
+        "sit",
+        "shake_0",
+        "shake_2",
+        "crouch",
+        "neutral"
+      ],
+      "modes": [
+        "dizzy",
+        "idle"
+      ]
+    },
+    {
+      "word": "walk",
+      "accepted": true,
+      "poses": [
+        "walk_0",
+        "walk_4",
+        "walk_5",
+        "walk_6",
+        "walk_7",
+        "neutral"
+      ],
+      "modes": [
+        "walk",
+        "idle"
+      ]
+    },
+    {
+      "word": "run",
+      "accepted": true,
+      "poses": [
+        "run_0",
+        "run_1",
+        "run_2",
+        "run_3",
+        "neutral",
+        "closed"
+      ],
+      "modes": [
+        "run",
+        "idle"
+      ]
+    },
+    {
+      "word": "wave",
+      "accepted": true,
+      "poses": [
+        "wave_0",
+        "wave_1",
+        "wave_2",
+        "wave_3",
+        "talk",
+        "happy",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "bow",
+      "accepted": true,
+      "poses": [
+        "bow_0",
+        "bow_1",
+        "bow_2",
+        "bow_3",
+        "closed",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "shiver",
+      "accepted": true,
+      "poses": [
+        "shy",
+        "sad",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "flap",
+      "accepted": true,
+      "poses": [
+        "crouch",
+        "wave_0",
+        "wave_1",
+        "wave_2",
+        "wave_3",
+        "neutral",
+        "talk",
+        "closed"
+      ],
+      "modes": [
+        "crouch",
+        "air",
+        "land",
+        "idle"
+      ]
+    },
+    {
+      "word": "dance",
+      "accepted": true,
+      "poses": [
+        "dance_0",
+        "dance_1",
+        "dance_2",
+        "dance_3",
+        "happy"
+      ],
+      "modes": [
+        "dance",
+        "idle"
+      ]
+    },
+    {
+      "word": "hug",
+      "accepted": true,
+      "poses": [
+        "sit",
+        "sit_happy",
+        "love",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "prone",
+      "accepted": true,
+      "poses": [
+        "sit",
+        "prone",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    },
+    {
+      "word": "stretch",
+      "accepted": true,
+      "poses": [
+        "sit",
+        "stretch",
+        "sit_happy",
+        "neutral"
+      ],
+      "modes": [
+        "idle"
+      ]
+    }
+  ],
+  "interactions": {
+    "poke": [
+      {
+        "kind": "mode",
+        "mode": "crouch"
+      },
+      {
+        "kind": "poke"
+      },
+      {
+        "kind": "mode",
+        "mode": "air"
+      },
+      {
+        "kind": "mode",
+        "mode": "land"
+      },
+      {
+        "kind": "mode",
+        "mode": "idle"
+      }
+    ],
+    "pat": [
+      {
+        "kind": "pet",
+        "asleep": false
+      }
+    ],
+    "lifted": {
+      "layout": {
+        "x": 537,
+        "facing": 1,
+        "mode": "drag",
+        "busy": true,
+        "pressing": true,
+        "cursor": "grabbing",
+        "moving": true,
+        "box": {
+          "x": 470.98391530879627,
+          "y": 262.9449610169792,
+          "w": 169.27276640564088,
+          "h": 265.15449451758644
+        },
+        "hit": [
+          {
+            "x": 551.4142974871081,
+            "y": 358.4376936773211,
+            "r": 75.60000000000001
+          },
+          {
+            "x": 550.7021130277502,
+            "y": 462.65218403853123,
+            "r": 59.85
+          }
+        ],
+        "bubble": {
+          "x": 552.1818740710827,
+          "y": 246.11763184357235
+        },
+        "side": {
+          "x": 551.2718605952365,
+          "y": 379.2805917495631,
+          "reach": 109.2
+        }
+      },
+      "pose": "lift_2",
+      "events": [
+        {
+          "kind": "mode",
+          "mode": "drag"
+        },
+        {
+          "kind": "grab"
+        }
+      ]
+    },
+    "liftPoses": [
+      "lift_3",
+      "lift_0",
+      "lift_1",
+      "lift_2"
+    ],
+    "throwModes": [
+      "air",
+      "dizzy",
+      "idle"
+    ],
+    "throwPoses": [
+      "fall",
+      "dizzy_0",
+      "dizzy_1",
+      "dizzy_2",
+      "dizzy_3",
+      "sit",
+      "shake_0",
+      "shake_2",
+      "crouch",
+      "neutral",
+      "side"
+    ],
+    "thrown": [
+      {
+        "kind": "mode",
+        "mode": "drag"
+      },
+      {
+        "kind": "grab"
+      },
+      {
+        "kind": "mode",
+        "mode": "air"
+      },
+      {
+        "kind": "throw",
+        "x": 567
+      },
+      {
+        "kind": "mode",
+        "mode": "dizzy"
+      },
+      {
+        "kind": "crash"
+      },
+      {
+        "kind": "mode",
+        "mode": "idle"
+      }
+    ],
+    "wake": {
+      "layout": {
+        "x": 537,
+        "facing": 1,
+        "mode": "wake",
+        "busy": false,
+        "pressing": false,
+        "cursor": "",
+        "moving": false,
+        "box": {
+          "x": 449.1366718681542,
+          "y": 346.8091755061273,
+          "w": 199.78608580359486,
+          "h": 190.83204125269242
+        },
+        "hit": [
+          {
+            "x": 544.7706104592412,
+            "y": 430.1369219513435,
+            "r": 68.25
+          },
+          {
+            "x": 539.975978473752,
+            "y": 491.754565853706,
+            "r": 51.45
+          }
+        ],
+        "bubble": {
+          "x": 545.4121740631458,
+          "y": 421.89194344084393
+        },
+        "side": {
+          "x": 545.4121740631458,
+          "y": 421.89194344084393,
+          "reach": 109.2
+        }
+      },
+      "pose": "sit",
+      "events": [
+        {
+          "kind": "mode",
+          "mode": "sleep"
+        },
+        {
+          "kind": "mode",
+          "mode": "wake"
+        },
+        {
+          "kind": "poke",
+          "woke": true
+        }
+      ]
+    },
+    "before": {
+      "x": 537,
+      "facing": 1,
+      "mode": "sleep",
+      "busy": false,
+      "pressing": false,
+      "cursor": "",
+      "moving": false,
+      "box": {
+        "x": 440.6402017591991,
+        "y": 410.8255014726667,
+        "w": 195.861763815541,
+        "h": 119.1744985273333
+      },
+      "hit": [
+        {
+          "x": 507.6731048832345,
+          "y": 483.5957704849322,
+          "r": 50.400000000000006
+        },
+        {
+          "x": 580.9903426751482,
+          "y": 499.4153941832507,
+          "r": 45.15
+        }
+      ],
+      "bubble": {
+        "x": 537,
+        "y": 425.5890950521415
+      },
+      "side": {
+        "x": 537,
+        "y": 425.5890950521415,
+        "reach": 109.2
+      }
+    }
+  }
+}

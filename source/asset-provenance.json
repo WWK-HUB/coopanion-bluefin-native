@@ -1,0 +1,898 @@
+{
+  "neutral": {
+    "source": "base.png",
+    "crop": [
+      0,
+      0,
+      362,
+      543
+    ],
+    "scale": 0.88,
+    "offset": [
+      85,
+      46
+    ]
+  },
+  "talk": {
+    "source": "base.png",
+    "crop": [
+      362,
+      0,
+      724,
+      543
+    ],
+    "scale": 0.88,
+    "offset": [
+      91,
+      46
+    ]
+  },
+  "closed": {
+    "source": "base.png",
+    "crop": [
+      724,
+      0,
+      1086,
+      543
+    ],
+    "scale": 0.88,
+    "offset": [
+      92,
+      47
+    ]
+  },
+  "wave_seed": {
+    "source": "base.png",
+    "crop": [
+      1086,
+      0,
+      1448,
+      543
+    ],
+    "scale": 0.88,
+    "offset": [
+      109,
+      46
+    ]
+  },
+  "smug": {
+    "source": "base.png",
+    "crop": [
+      0,
+      543,
+      362,
+      1086
+    ],
+    "scale": 0.88,
+    "offset": [
+      84,
+      47
+    ]
+  },
+  "sit_happy": {
+    "source": "base.png",
+    "crop": [
+      362,
+      543,
+      724,
+      1086
+    ],
+    "scale": 0.88,
+    "offset": [
+      87,
+      43
+    ]
+  },
+  "side": {
+    "source": "base.png",
+    "crop": [
+      724,
+      543,
+      1086,
+      1086
+    ],
+    "scale": 0.88,
+    "offset": [
+      103,
+      44
+    ]
+  },
+  "back": {
+    "source": "base.png",
+    "crop": [
+      1086,
+      543,
+      1448,
+      1086
+    ],
+    "scale": 0.88,
+    "offset": [
+      115,
+      48
+    ]
+  },
+  "excited": {
+    "source": "emotions.png",
+    "crop": [
+      0,
+      0,
+      362,
+      543
+    ],
+    "scale": 0.88,
+    "offset": [
+      83,
+      51
+    ]
+  },
+  "happy": {
+    "source": "emotions.png",
+    "crop": [
+      362,
+      0,
+      724,
+      543
+    ],
+    "scale": 0.88,
+    "offset": [
+      84,
+      51
+    ]
+  },
+  "shy": {
+    "source": "emotions.png",
+    "crop": [
+      724,
+      0,
+      1086,
+      543
+    ],
+    "scale": 0.88,
+    "offset": [
+      94,
+      51
+    ]
+  },
+  "thinking": {
+    "source": "emotions.png",
+    "crop": [
+      1086,
+      0,
+      1448,
+      543
+    ],
+    "scale": 0.88,
+    "offset": [
+      109,
+      52
+    ]
+  },
+  "angry": {
+    "source": "emotions.png",
+    "crop": [
+      0,
+      543,
+      362,
+      1086
+    ],
+    "scale": 0.88,
+    "offset": [
+      85,
+      38
+    ]
+  },
+  "sad": {
+    "source": "emotions.png",
+    "crop": [
+      362,
+      543,
+      724,
+      1086
+    ],
+    "scale": 0.88,
+    "offset": [
+      92,
+      41
+    ]
+  },
+  "cry": {
+    "source": "emotions.png",
+    "crop": [
+      724,
+      543,
+      1086,
+      1086
+    ],
+    "scale": 0.88,
+    "offset": [
+      112,
+      40
+    ]
+  },
+  "love": {
+    "source": "emotions.png",
+    "crop": [
+      1086,
+      543,
+      1448,
+      1086
+    ],
+    "scale": 0.88,
+    "offset": [
+      106,
+      42
+    ]
+  },
+  "sit": {
+    "source": "poses.png",
+    "crop": [
+      0,
+      0,
+      347,
+      480
+    ],
+    "scale": 0.88,
+    "offset": [
+      94,
+      83
+    ]
+  },
+  "prone": {
+    "source": "poses.png",
+    "crop": [
+      347,
+      0,
+      720,
+      480
+    ],
+    "scale": 0.88,
+    "offset": [
+      96,
+      92
+    ]
+  },
+  "sleep": {
+    "source": "poses.png",
+    "crop": [
+      720,
+      0,
+      1090,
+      480
+    ],
+    "scale": 0.88,
+    "offset": [
+      99,
+      102
+    ]
+  },
+  "stretch": {
+    "source": "poses.png",
+    "crop": [
+      1090,
+      0,
+      1448,
+      480
+    ],
+    "scale": 0.88,
+    "offset": [
+      106,
+      84
+    ]
+  },
+  "jump": {
+    "source": "poses.png",
+    "crop": [
+      0,
+      480,
+      350,
+      1086
+    ],
+    "scale": 0.88,
+    "offset": [
+      96,
+      81
+    ]
+  },
+  "crouch": {
+    "source": "poses.png",
+    "crop": [
+      350,
+      480,
+      707,
+      1086
+    ],
+    "scale": 0.88,
+    "offset": [
+      101,
+      25
+    ]
+  },
+  "lift_seed": {
+    "source": "poses.png",
+    "crop": [
+      707,
+      480,
+      1040,
+      1086
+    ],
+    "scale": 0.88,
+    "offset": [
+      124,
+      4
+    ]
+  },
+  "fall": {
+    "source": "poses.png",
+    "crop": [
+      1040,
+      480,
+      1448,
+      1086
+    ],
+    "scale": 0.88,
+    "offset": [
+      71,
+      70
+    ]
+  },
+  "walk_0": {
+    "source": "walk.png",
+    "crop": [
+      0,
+      0.0,
+      418,
+      470.5
+    ],
+    "scale": 1.03,
+    "offset": [
+      -45,
+      47
+    ]
+  },
+  "walk_1": {
+    "source": "walk.png",
+    "crop": [
+      418,
+      0.0,
+      836,
+      470.5
+    ],
+    "scale": 1.03,
+    "offset": [
+      17,
+      48
+    ]
+  },
+  "walk_2": {
+    "source": "walk.png",
+    "crop": [
+      836,
+      0.0,
+      1254,
+      470.5
+    ],
+    "scale": 1.03,
+    "offset": [
+      71,
+      46
+    ]
+  },
+  "walk_3": {
+    "source": "walk.png",
+    "crop": [
+      1254,
+      0.0,
+      1672,
+      470.5
+    ],
+    "scale": 1.03,
+    "offset": [
+      128,
+      46
+    ]
+  },
+  "walk_4": {
+    "source": "walk.png",
+    "crop": [
+      0,
+      470.5,
+      418,
+      941.0
+    ],
+    "scale": 1.03,
+    "offset": [
+      -25,
+      46
+    ]
+  },
+  "walk_5": {
+    "source": "walk.png",
+    "crop": [
+      418,
+      470.5,
+      836,
+      941.0
+    ],
+    "scale": 1.03,
+    "offset": [
+      28,
+      46
+    ]
+  },
+  "walk_6": {
+    "source": "walk.png",
+    "crop": [
+      836,
+      470.5,
+      1254,
+      941.0
+    ],
+    "scale": 1.03,
+    "offset": [
+      88,
+      43
+    ]
+  },
+  "walk_7": {
+    "source": "walk.png",
+    "crop": [
+      1254,
+      470.5,
+      1672,
+      941.0
+    ],
+    "scale": 1.03,
+    "offset": [
+      130,
+      43
+    ]
+  },
+  "lift_0": {
+    "source": "supplement.png",
+    "crop": [
+      0.0,
+      0,
+      311.75,
+      330
+    ],
+    "scale": 1.38,
+    "offset": [
+      28,
+      45
+    ]
+  },
+  "lift_1": {
+    "source": "supplement.png",
+    "crop": [
+      311.75,
+      0,
+      623.5,
+      330
+    ],
+    "scale": 1.38,
+    "offset": [
+      30,
+      55
+    ]
+  },
+  "lift_2": {
+    "source": "supplement.png",
+    "crop": [
+      623.5,
+      0,
+      935.25,
+      330
+    ],
+    "scale": 1.38,
+    "offset": [
+      48,
+      51
+    ]
+  },
+  "lift_3": {
+    "source": "supplement.png",
+    "crop": [
+      935.25,
+      0,
+      1247.0,
+      330
+    ],
+    "scale": 1.38,
+    "offset": [
+      55,
+      56
+    ]
+  },
+  "dizzy_0": {
+    "source": "supplement.png",
+    "crop": [
+      0.0,
+      330,
+      311.75,
+      615
+    ],
+    "scale": 1.38,
+    "offset": [
+      34,
+      106
+    ]
+  },
+  "dizzy_1": {
+    "source": "supplement.png",
+    "crop": [
+      311.75,
+      330,
+      623.5,
+      615
+    ],
+    "scale": 1.38,
+    "offset": [
+      30,
+      107
+    ]
+  },
+  "dizzy_2": {
+    "source": "supplement.png",
+    "crop": [
+      623.5,
+      330,
+      935.25,
+      615
+    ],
+    "scale": 1.38,
+    "offset": [
+      35,
+      107
+    ]
+  },
+  "dizzy_3": {
+    "source": "supplement.png",
+    "crop": [
+      935.25,
+      330,
+      1247.0,
+      615
+    ],
+    "scale": 1.38,
+    "offset": [
+      50,
+      104
+    ]
+  },
+  "bow_0": {
+    "source": "supplement.png",
+    "crop": [
+      0.0,
+      615,
+      311.75,
+      931
+    ],
+    "scale": 1.38,
+    "offset": [
+      21,
+      66
+    ]
+  },
+  "bow_1": {
+    "source": "supplement.png",
+    "crop": [
+      311.75,
+      615,
+      623.5,
+      931
+    ],
+    "scale": 1.38,
+    "offset": [
+      35,
+      68
+    ]
+  },
+  "bow_2": {
+    "source": "supplement.png",
+    "crop": [
+      623.5,
+      615,
+      935.25,
+      931
+    ],
+    "scale": 1.38,
+    "offset": [
+      50,
+      68
+    ]
+  },
+  "bow_3": {
+    "source": "supplement.png",
+    "crop": [
+      935.25,
+      615,
+      1247.0,
+      931
+    ],
+    "scale": 1.38,
+    "offset": [
+      60,
+      68
+    ]
+  },
+  "wave_0": {
+    "source": "supplement.png",
+    "crop": [
+      0.0,
+      931,
+      311.75,
+      1261
+    ],
+    "scale": 1.38,
+    "offset": [
+      19,
+      57
+    ]
+  },
+  "wave_1": {
+    "source": "supplement.png",
+    "crop": [
+      311.75,
+      931,
+      623.5,
+      1261
+    ],
+    "scale": 1.38,
+    "offset": [
+      32,
+      57
+    ]
+  },
+  "wave_2": {
+    "source": "supplement.png",
+    "crop": [
+      623.5,
+      931,
+      935.25,
+      1261
+    ],
+    "scale": 1.38,
+    "offset": [
+      59,
+      56
+    ]
+  },
+  "wave_3": {
+    "source": "supplement.png",
+    "crop": [
+      935.25,
+      931,
+      1247.0,
+      1261
+    ],
+    "scale": 1.38,
+    "offset": [
+      59,
+      57
+    ]
+  },
+  "nod_0": {
+    "source": "supplement2.png",
+    "crop": [
+      0.0,
+      0.0,
+      271.5,
+      362.0
+    ],
+    "scale": 1.3970915094938718,
+    "offset": [
+      49,
+      17
+    ]
+  },
+  "nod_1": {
+    "source": "supplement2.png",
+    "crop": [
+      271.5,
+      0.0,
+      543.0,
+      362.0
+    ],
+    "scale": 1.3970915094938718,
+    "offset": [
+      56,
+      17
+    ]
+  },
+  "nod_2": {
+    "source": "supplement2.png",
+    "crop": [
+      543.0,
+      0.0,
+      814.5,
+      362.0
+    ],
+    "scale": 1.3970915094938718,
+    "offset": [
+      64,
+      17
+    ]
+  },
+  "nod_3": {
+    "source": "supplement2.png",
+    "crop": [
+      814.5,
+      0.0,
+      1086.0,
+      362.0
+    ],
+    "scale": 1.3970915094938718,
+    "offset": [
+      72,
+      17
+    ]
+  },
+  "shake_0": {
+    "source": "supplement2.png",
+    "crop": [
+      0.0,
+      362.0,
+      271.5,
+      724.0
+    ],
+    "scale": 1.3970915094938718,
+    "offset": [
+      49,
+      24
+    ]
+  },
+  "shake_1": {
+    "source": "supplement2.png",
+    "crop": [
+      271.5,
+      362.0,
+      543.0,
+      724.0
+    ],
+    "scale": 1.3970915094938718,
+    "offset": [
+      50,
+      24
+    ]
+  },
+  "shake_2": {
+    "source": "supplement2.png",
+    "crop": [
+      543.0,
+      362.0,
+      814.5,
+      724.0
+    ],
+    "scale": 1.3970915094938718,
+    "offset": [
+      61,
+      24
+    ]
+  },
+  "shake_3": {
+    "source": "supplement2.png",
+    "crop": [
+      814.5,
+      362.0,
+      1086.0,
+      724.0
+    ],
+    "scale": 1.3970915094938718,
+    "offset": [
+      68,
+      24
+    ]
+  },
+  "run_0": {
+    "source": "supplement2.png",
+    "crop": [
+      0.0,
+      724.0,
+      271.5,
+      1086.0
+    ],
+    "scale": 1.3970915094938718,
+    "offset": [
+      39,
+      31
+    ]
+  },
+  "run_1": {
+    "source": "supplement2.png",
+    "crop": [
+      271.5,
+      724.0,
+      543.0,
+      1086.0
+    ],
+    "scale": 1.3970915094938718,
+    "offset": [
+      51,
+      72
+    ]
+  },
+  "run_2": {
+    "source": "supplement2.png",
+    "crop": [
+      543.0,
+      724.0,
+      814.5,
+      1086.0
+    ],
+    "scale": 1.3970915094938718,
+    "offset": [
+      56,
+      31
+    ]
+  },
+  "run_3": {
+    "source": "supplement2.png",
+    "crop": [
+      814.5,
+      724.0,
+      1086.0,
+      1086.0
+    ],
+    "scale": 1.3970915094938718,
+    "offset": [
+      61,
+      72
+    ]
+  },
+  "dance_0": {
+    "source": "supplement2.png",
+    "crop": [
+      0.0,
+      1086.0,
+      271.5,
+      1448.0
+    ],
+    "scale": 1.3970915094938718,
+    "offset": [
+      46,
+      17
+    ]
+  },
+  "dance_1": {
+    "source": "supplement2.png",
+    "crop": [
+      271.5,
+      1086.0,
+      543.0,
+      1448.0
+    ],
+    "scale": 1.3970915094938718,
+    "offset": [
+      52,
+      17
+    ]
+  },
+  "dance_2": {
+    "source": "supplement2.png",
+    "crop": [
+      543.0,
+      1086.0,
+      814.5,
+      1448.0
+    ],
+    "scale": 1.3970915094938718,
+    "offset": [
+      76,
+      17
+    ]
+  },
+  "dance_3": {
+    "source": "supplement2.png",
+    "crop": [
+      814.5,
+      1086.0,
+      1086.0,
+      1448.0
+    ],
+    "scale": 1.3970915094938718,
+    "offset": [
+      75,
+      17
+    ]
+  }
+}

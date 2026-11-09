@@ -471,7 +471,7 @@ internal class OverlayWindow(
         val height = dp(if (actionsExpanded) 48 + 8 + 48 * 5 else 48)
         actionsParams.width = width
         actionsParams.height = height
-        val (x, y) = OverlayLayout.clamp(sw - width - dp(12), dp(12), width, height, sw, screenSize().second)
+        val (x, y) = OverlayLayout.clamp(sw - width - dp(12), dp(64), width, height, sw, screenSize().second)
         actionsParams.x = x
         actionsParams.y = y
         if (actionsAttached) {

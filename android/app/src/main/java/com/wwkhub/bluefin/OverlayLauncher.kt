@@ -38,6 +38,7 @@ internal object OverlayLauncher {
     private var guideShowing = false
     private var appContext: Context? = null
     private var watching = false
+    private var reattachBurst = 0
 
     private val opListener = AppOpsManager.OnOpChangedListener { _, _ ->
         handler.post {
@@ -217,14 +218,31 @@ internal object OverlayLauncher {
     private fun onWindowDetached(context: Context) {
         val current = window ?: return
         val revoked = !Settings.canDrawOverlays(context)
+        if (!revoked) {
+            // A full-screen overlay can be detached while the shade opens.
+            // That is not the user closing it, and it must not flip the
+            // notification to 显示.
+            Log.i(TAG, "overlay detached while permission remains, reattaching")
+            window = null
+            current.close()
+            if (reattachBurst >= 3) {
+                Log.w(TAG, "overlay left down after repeated system detaches")
+                return
+            }
+            reattachBurst += 1
+            handler.post {
+                if (window == null) show(context.applicationContext, toast = false)
+                handler.postDelayed({ reattachBurst = 0 }, 2000)
+            }
+            return
+        }
         window = null
         stopWatching()
         current.close()
         prefs(context).edit().putBoolean(BluefinStore.KEY_OVERLAY, false).apply()
         dispatch()
         BluefinForegroundService.refresh(context)
-        val message = if (revoked) R.string.overlay_permission_revoked else R.string.overlay_closed
-        Toast.makeText(context.applicationContext, message, Toast.LENGTH_LONG).show()
+        Toast.makeText(context.applicationContext, R.string.overlay_permission_revoked, Toast.LENGTH_LONG).show()
     }
 
     private fun onPermissionRevoked(context: Context) {

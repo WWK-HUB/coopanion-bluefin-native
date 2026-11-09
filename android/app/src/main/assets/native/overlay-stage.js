@@ -36,7 +36,8 @@
         window.__bluefinRoam = window.__bluefinRoamPref || "free";
       }
       track.timer = setTimeout(function () {
-        if (!track || track.lifted || track.net > 12) return;
+        // A scrub that has already started moving is a head-pat, not a lift.
+        if (!track || track.lifted || track.path > 10) return;
         track.lifted = true;
         grab(track.start, null);
       }, HOLD_MS);

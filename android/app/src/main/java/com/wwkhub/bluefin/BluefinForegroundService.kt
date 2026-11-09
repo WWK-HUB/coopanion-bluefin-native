@@ -13,6 +13,7 @@ import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
 import android.provider.Settings
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 
@@ -25,6 +26,7 @@ class BluefinForegroundService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.i(TAG, "service action=${intent?.action}")
         when (intent?.action) {
             ACTION_TOGGLE_OVERLAY -> OverlayLauncher.onNotificationToggle(this)
             null -> OverlayLauncher.restoreIfEnabled(this)
@@ -48,6 +50,7 @@ class BluefinForegroundService : Service() {
             this,
             REQUEST_OPEN,
             Intent(this, MainActivity::class.java).apply {
+                action = ACTION_RETURN
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or
                     Intent.FLAG_ACTIVITY_SINGLE_TOP or
                     Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -117,6 +120,8 @@ class BluefinForegroundService : Service() {
         private const val NOTIFICATION_ID = 1001
         private const val REQUEST_OPEN = 1
         private const val REQUEST_OVERLAY = 2
+        private const val TAG = "BluefinOverlay"
+        const val ACTION_RETURN = "com.wwkhub.bluefin.action.RETURN"
         private const val ACTION_TOGGLE_OVERLAY = "com.wwkhub.bluefin.action.TOGGLE_OVERLAY"
         private const val ACTION_REFRESH = "com.wwkhub.bluefin.action.REFRESH_NOTIFICATION"
 

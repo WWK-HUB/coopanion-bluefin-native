@@ -13,8 +13,8 @@ android {
         applicationId = "com.wwkhub.bluefin"
         minSdk = 26
         targetSdk = 35
-        versionCode = 4
-        versionName = "0.2.2-preview"
+        versionCode = 6
+        versionName = "0.3.1-preview"
     }
 
     buildTypes {

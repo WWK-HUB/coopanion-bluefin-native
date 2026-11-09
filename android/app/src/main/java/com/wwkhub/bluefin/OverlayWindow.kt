@@ -1,41 +1,38 @@
 package com.wwkhub.bluefin
 
+import android.annotation.SuppressLint
 import android.content.ComponentCallbacks2
 import android.content.Context
 import android.content.res.Configuration
-import android.view.ContextThemeWrapper
 import android.graphics.PixelFormat
 import android.hardware.display.DisplayManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import android.util.Log
 import android.view.Display
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
+import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
-import android.annotation.SuppressLint
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
+import androidx.annotation.Keep
 import androidx.webkit.WebViewAssetLoader
 import androidx.webkit.WebViewClientCompat
 import org.json.JSONObject
 import kotlin.math.roundToInt
 
 /**
- * A small translucent [WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY]
- * hosting the same offline preview as the in-app WebView.
- *
- * The window is owned by an application / window context, not an Activity,
- * so a configuration change does not destroy it. Position is clamped to the
- * current display on every drag and whenever the display size changes.
- * Touches outside the window pass through (`FLAG_NOT_TOUCH_MODAL`); touches
- * inside hit either the preview or the chrome, never a full-screen layer.
+ * Full-screen transparent stage plus a pet-sized touch window.
+ * The engine draws the character on the screen (roam, lift, throw, poke).
+ * Touches outside the hit circles pass through to other apps.
  */
 internal class OverlayWindow(
     context: Context,
@@ -44,30 +41,34 @@ internal class OverlayWindow(
 ) {
     private val appContext = context.applicationContext
     private val uiContext = createUiContext(appContext)
-    private val themedContext = ContextThemeWrapper(uiContext, R.style.Theme_Bluefin)
+    private val themedContext = android.view.ContextThemeWrapper(uiContext, R.style.Theme_Bluefin)
     private val windowManager = uiContext.getSystemService(WindowManager::class.java)
     private val handler = Handler(Looper.getMainLooper())
     private val cuePlayer = CuePlayer()
     private val root: FrameLayout
     private val web: WebView
-    private val handle: View
-    private val chromeBar: View
-    private val closeButton: View
     private val params: WindowManager.LayoutParams
+    private val hit = View(themedContext)
+    private val hitParams: WindowManager.LayoutParams
+    private val actions: View
+    private val actionsParams: WindowManager.LayoutParams
+    private var actionsExpanded = false
     private var attached = false
+    private var hitAttached = false
+    private var actionsAttached = false
     private var destroyed = false
     private var closing = false
     private var pageReady = false
-    private var placed = false
-    private var dragging = false
-    private var startX = 0
-    private var startY = 0
+    private var tracking = false
     private var downRawX = 0f
     private var downRawY = 0f
-    private var lastRawX = 0f
-    private var lastRawY = 0f
-    private var lastScreenW = 0
-    private var lastScreenH = 0
+    private var downWinX = 0
+    private var downWinY = 0
+    private var lastMode = ""
+    private var resting = false
+    private var lastInteract = SystemClock.uptimeMillis()
+    private var lastTurnAt = 0L
+    private var webDestroyed = false
 
     private val componentCallbacks = object : ComponentCallbacks2 {
         override fun onConfigurationChanged(newConfig: Configuration) {
@@ -81,13 +82,9 @@ internal class OverlayWindow(
 
     private val displayListener = object : DisplayManager.DisplayListener {
         override fun onDisplayAdded(displayId: Int) = Unit
-
         override fun onDisplayRemoved(displayId: Int) = Unit
-
         override fun onDisplayChanged(displayId: Int) {
             if (displayId != Display.DEFAULT_DISPLAY) return
-            val (w, h) = screenSize()
-            if (w == lastScreenW && h == lastScreenH) return
             relayout()
         }
     }
@@ -96,19 +93,15 @@ internal class OverlayWindow(
         checkPlatformFlags()
         root = inflateRoot()
         web = root.findViewById(R.id.overlay_web)
-        handle = root.findViewById(R.id.overlay_handle)
-        chromeBar = root.findViewById(R.id.overlay_chrome)
-        closeButton = root.findViewById(R.id.overlay_close)
-        params = buildParams()
+        params = fullscreenParams(touchable = false)
+        hitParams = fullscreenParams(touchable = true)
+        actions = android.view.LayoutInflater.from(themedContext).inflate(R.layout.overlay_actions, null)
+        actionsParams = fullscreenParams(touchable = true)
         setupWebView()
-        setupDrag()
-        closeButton.setOnClickListener {
-            if (destroyed) return@setOnClickListener
-            root.post { if (!destroyed) onCloseRequested() }
-        }
+        setupHit()
+        setupActions()
         root.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
             override fun onViewAttachedToWindow(v: View) = Unit
-
             override fun onViewDetachedFromWindow(v: View) {
                 if (closing || destroyed) return
                 attached = false
@@ -119,10 +112,11 @@ internal class OverlayWindow(
 
     fun show() {
         if (attached || destroyed) return
-        applyWindowSize(initial = true)
+        applyStageSize()
         registerDisplayCallbacks()
         windowManager.addView(root, params)
         attached = true
+        addActions()
         web.loadUrl(PreviewEntry.urlFor(PreviewEntry.ROUTE_B))
     }
 
@@ -132,6 +126,10 @@ internal class OverlayWindow(
         val wasAttached = attached
         attached = false
         unregisterDisplayCallbacks()
+        removeIfAttached(hit, hitAttached)
+        hitAttached = false
+        removeIfAttached(actions, actionsAttached)
+        actionsAttached = false
         if (wasAttached) {
             try {
                 windowManager.removeViewImmediate(root)
@@ -145,8 +143,6 @@ internal class OverlayWindow(
 
     fun syncFromPrefs() {
         if (destroyed) return
-        applyWindowSize(initial = false)
-        if (attached) updateLayout()
         if (pageReady) pushPrefs()
     }
 
@@ -162,6 +158,7 @@ internal class OverlayWindow(
             .addPathHandler("/assets/", AssetMimeHandler(uiContext))
             .build()
         if (BuildConfig.DEBUG) WebView.setWebContentsDebuggingEnabled(true)
+        root.setBackgroundColor(0)
         web.setBackgroundColor(0)
         web.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         web.overScrollMode = View.OVER_SCROLL_NEVER
@@ -169,6 +166,7 @@ internal class OverlayWindow(
         web.isHorizontalScrollBarEnabled = false
         web.isLongClickable = false
         web.isHapticFeedbackEnabled = false
+        web.isFocusable = false
         web.isFocusableInTouchMode = false
         web.setOnLongClickListener { true }
         web.settings.apply {
@@ -194,7 +192,6 @@ internal class OverlayWindow(
         web.addJavascriptInterface(
             BluefinBridge(object : BluefinHost {
                 override fun isSoundOn(): Boolean = soundOn()
-
                 override fun onScriptMessage(message: String) {
                     Log.w(TAG, message)
                 }
@@ -207,12 +204,16 @@ internal class OverlayWindow(
             }),
             BRIDGE_NAME,
         )
-        web.webChromeClient = WebChromeClient()
+        web.addJavascriptInterface(OverlayLayoutSink { json -> handler.post { onLayout(json) } }, OVERLAY_BRIDGE)
+        web.webChromeClient = object : WebChromeClient() {
+            override fun onConsoleMessage(consoleMessage: android.webkit.ConsoleMessage): Boolean {
+                Log.i(TAG, "console ${consoleMessage.message()}")
+                return true
+            }
+        }
         web.webViewClient = object : WebViewClientCompat() {
-            override fun shouldInterceptRequest(
-                view: WebView,
-                request: WebResourceRequest,
-            ) = assetLoader.shouldInterceptRequest(request.url)
+            override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest) =
+                assetLoader.shouldInterceptRequest(request.url)
 
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                 return request.url.host != "appassets.androidplatform.net"
@@ -229,8 +230,9 @@ internal class OverlayWindow(
 
     private fun injectPage() {
         val bridge = uiContext.assets.open("native/bridge.js").bufferedReader().use { it.readText() }
+        val stage = uiContext.assets.open("native/overlay-stage.js").bufferedReader().use { it.readText() }
         web.evaluateJavascript(bridge, null)
-        web.evaluateJavascript(OVERLAY_CHROME_JS, null)
+        web.evaluateJavascript(stage, null)
         pushPrefs()
     }
 
@@ -238,52 +240,58 @@ internal class OverlayWindow(
         if (destroyed) return
         val roam = prefs().getBoolean(BluefinStore.KEY_ROAM, true)
         val hidden = prefs().getBoolean(BluefinStore.KEY_HIDDEN, false)
-        val size = JSONObject.quote(sizeName())
-        val sound = soundOn()
+        val size = sizeName()
+        val quoted = JSONObject.quote(size)
+        val scale = OverlayPetPolicy.scaleFor(size)
         web.evaluateJavascript(
-            "window.__bluefinNative&&window.__bluefinNative.applyPrefs($roam,$size,$hidden)",
+            "window.__bluefinNative&&window.__bluefinNative.applyPrefs($roam,$quoted,$hidden)",
             null,
         )
         web.evaluateJavascript(
-            "window.__bluefinApplySound&&window.__bluefinApplySound($sound)",
+            "window.__bluefinApplySound&&window.__bluefinApplySound(${soundOn()})",
+            null,
+        )
+        web.evaluateJavascript(
+            "window.__bluefinOverlay&&window.__bluefinOverlay.setScale($scale)",
             null,
         )
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun setupDrag() {
-        handle.setOnTouchListener { view, event ->
-            view.parent?.requestDisallowInterceptTouchEvent(true)
+    private fun setupHit() {
+        hit.setBackgroundColor(0)
+        hit.setOnTouchListener { _, event ->
+            val cssX = cssX(event.rawX)
+            val cssY = cssY(event.rawY)
             when (event.actionMasked) {
                 MotionEvent.ACTION_DOWN -> {
-                    dragging = true
-                    startX = params.x
-                    startY = params.y
+                    tracking = true
+                    resting = false
+                    lastInteract = SystemClock.uptimeMillis()
                     downRawX = event.rawX
                     downRawY = event.rawY
-                    lastRawX = event.rawX
-                    lastRawY = event.rawY
+                    downWinX = hitParams.x
+                    downWinY = hitParams.y
+                    sendPointer("down", cssX, cssY)
                     true
                 }
 
                 MotionEvent.ACTION_MOVE -> {
-                    if (!dragging || !attached) return@setOnTouchListener true
-                    lastRawX = event.rawX
-                    lastRawY = event.rawY
-                    val (sw, sh) = screenSize()
-                    val nx = startX + (event.rawX - downRawX).roundToInt()
-                    val ny = startY + (event.rawY - downRawY).roundToInt()
-                    val (cx, cy) = OverlayLayout.clamp(nx, ny, params.width, params.height, sw, sh)
-                    if (cx != params.x || cy != params.y) {
-                        params.x = cx
-                        params.y = cy
-                        updateLayout()
-                    }
+                    if (tracking) moveHitWithFinger(event.rawX, event.rawY)
+                    sendPointer("move", cssX, cssY)
                     true
                 }
 
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    dragging = false
+                MotionEvent.ACTION_UP -> {
+                    tracking = false
+                    lastInteract = SystemClock.uptimeMillis()
+                    sendPointer("up", cssX, cssY)
+                    true
+                }
+
+                MotionEvent.ACTION_CANCEL -> {
+                    tracking = false
+                    sendPointer("cancel", cssX, cssY)
                     true
                 }
 
@@ -292,17 +300,203 @@ internal class OverlayWindow(
         }
     }
 
-    @SuppressLint("RtlHardcoded")
-    private fun buildParams(): WindowManager.LayoutParams {
+    private fun setupActions() {
+        actions.findViewById<View>(R.id.overlay_actions_bar).setOnClickListener {
+            actionsExpanded = !actionsExpanded
+            Log.i(TAG, "actions expanded=$actionsExpanded")
+            actions.findViewById<View>(R.id.overlay_actions_panel).visibility =
+                if (actionsExpanded) View.VISIBLE else View.GONE
+            resizeActions()
+        }
+        actions.findViewById<View>(R.id.overlay_close).setOnClickListener {
+            if (!destroyed) onCloseRequested()
+        }
+        listOf(
+            R.id.overlay_action_wave to "wave",
+            R.id.overlay_action_walk to "walk",
+            R.id.overlay_action_run to "run",
+            R.id.overlay_action_dance to "dance",
+            R.id.overlay_action_sleep to "sleep",
+        ).forEach { (id, word) ->
+            actions.findViewById<View>(id).setOnClickListener {
+                lastInteract = SystemClock.uptimeMillis()
+                resting = false
+                actionsExpanded = false
+                actions.findViewById<View>(R.id.overlay_actions_panel).visibility = View.GONE
+                resizeActions()
+                web.evaluateJavascript(
+                    "window.__bluefinOverlay&&window.__bluefinOverlay.act(${JSONObject.quote(word)})",
+                    null,
+                )
+                Log.i(TAG, "action $word")
+            }
+        }
+    }
+
+    private fun onLayout(json: String) {
+        if (destroyed || !attached) return
+        val parsed = try {
+            JSONObject(json)
+        } catch (error: RuntimeException) {
+            Log.w(TAG, "bad layout", error)
+            return
+        }
+        val mode = parsed.optString("mode")
+        val facing = parsed.optInt("facing", 1)
+        val x = parsed.optDouble("x").toFloat()
+        val minX = parsed.optDouble("minX").toFloat()
+        val maxX = parsed.optDouble("maxX").toFloat()
+        if (mode != lastMode) {
+            Log.i(TAG, "mode $lastMode -> $mode x=$x facing=$facing")
+            if (resting && (mode == "idle" || mode == "walk" || mode == "run")) resting = false
+            lastMode = mode
+        }
+        if (!tracking) placeHit(parsed)
+        val now = SystemClock.uptimeMillis()
+        val target = OverlayPetPolicy.edgeTarget(x, facing, minX, maxX, mode)
+        if (target != null && !resting && now - lastTurnAt > 450) {
+            lastTurnAt = now
+            val run = mode == "run"
+            Log.i(TAG, "edge turn x=$x -> $target")
+            web.evaluateJavascript(
+                "window.__bluefinOverlay&&window.__bluefinOverlay.walkTo($target, $run)",
+                null,
+            )
+        }
+        if (OverlayPetPolicy.shouldStartSleep(now - lastInteract, mode, resting)) {
+            resting = true
+            Log.i(TAG, "idle rest")
+            web.evaluateJavascript("window.__bluefinOverlay&&window.__bluefinOverlay.rest()", null)
+        }
+    }
+
+    private fun placeHit(parsed: JSONObject) {
+        val hits = parsed.optJSONArray("hits") ?: return
+        if (hits.length() == 0) return
+        var minX = Float.POSITIVE_INFINITY
+        var minY = Float.POSITIVE_INFINITY
+        var maxX = Float.NEGATIVE_INFINITY
+        var maxY = Float.NEGATIVE_INFINITY
+        for (i in 0 until hits.length()) {
+            val hit = hits.getJSONObject(i)
+            val hx = hit.optDouble("x").toFloat()
+            val hy = hit.optDouble("y").toFloat()
+            val r = hit.optDouble("r").toFloat()
+            minX = minOf(minX, hx - r)
+            minY = minOf(minY, hy - r)
+            maxX = maxOf(maxX, hx + r)
+            maxY = maxOf(maxY, hy + r)
+        }
+        val d = density()
+        val pad = 12f * d
+        val loc = IntArray(2)
+        web.getLocationOnScreen(loc)
+        val left = (loc[0] + minX * d - pad).roundToInt()
+        val top = (loc[1] + minY * d - pad).roundToInt()
+        val right = (loc[0] + maxX * d + pad).roundToInt()
+        val bottom = (loc[1] + maxY * d + pad).roundToInt()
         val (sw, sh) = screenSize()
-        val (w, h) = OverlayLayout.windowSizePx(sizeName(), density(), sw, sh)
+        val width = (right - left).coerceAtLeast(dp(48))
+        val height = (bottom - top).coerceAtLeast(dp(48))
+        val (x, y) = OverlayLayout.clamp(left, top, width, height, sw, sh)
+        hitParams.x = x
+        hitParams.y = y
+        hitParams.width = width.coerceAtMost(sw)
+        hitParams.height = height.coerceAtMost(sh)
+        if (!hitAttached) {
+            try {
+                windowManager.addView(hit, hitParams)
+                hitAttached = true
+                bringActionsToFront()
+            } catch (error: RuntimeException) {
+                Log.w(TAG, "hit window failed", error)
+            }
+        } else {
+            try {
+                windowManager.updateViewLayout(hit, hitParams)
+            } catch (error: IllegalArgumentException) {
+                hitAttached = false
+            }
+        }
+    }
+
+    private fun moveHitWithFinger(rawX: Float, rawY: Float) {
+        if (!hitAttached) return
+        val (sw, sh) = screenSize()
+        val nx = downWinX + (rawX - downRawX).roundToInt()
+        val ny = downWinY + (rawY - downRawY).roundToInt()
+        val (x, y) = OverlayLayout.clamp(nx, ny, hitParams.width, hitParams.height, sw, sh)
+        hitParams.x = x
+        hitParams.y = y
+        try {
+            windowManager.updateViewLayout(hit, hitParams)
+        } catch (error: IllegalArgumentException) {
+            hitAttached = false
+        }
+    }
+
+    private fun sendPointer(type: String, x: Float, y: Float) {
+        if (!pageReady) return
+        web.evaluateJavascript(
+            "window.__bluefinOverlay&&window.__bluefinOverlay.pointer(${JSONObject.quote(type)},$x,$y)",
+            null,
+        )
+    }
+
+    private fun bringActionsToFront() {
+        if (!actionsAttached) return
+        try {
+            windowManager.removeViewImmediate(actions)
+            windowManager.addView(actions, actionsParams)
+        } catch (error: RuntimeException) {
+            Log.w(TAG, "could not raise actions", error)
+            actionsAttached = false
+        }
+    }
+
+    private fun addActions() {
+        resizeActions()
+        if (actionsAttached) return
+        try {
+            windowManager.addView(actions, actionsParams)
+            actionsAttached = true
+        } catch (error: RuntimeException) {
+            Log.w(TAG, "actions window failed", error)
+        }
+    }
+
+    private fun resizeActions() {
+        val (sw, _) = screenSize()
+        val width = dp(if (actionsExpanded) 168 else 132)
+        val height = dp(if (actionsExpanded) 48 + 8 + 48 * 5 else 48)
+        actionsParams.width = width
+        actionsParams.height = height
+        val (x, y) = OverlayLayout.clamp(sw - width - dp(12), dp(64), width, height, sw, screenSize().second)
+        actionsParams.x = x
+        actionsParams.y = y
+        if (actionsAttached) {
+            try {
+                windowManager.updateViewLayout(actions, actionsParams)
+            } catch (error: IllegalArgumentException) {
+                actionsAttached = false
+            }
+        }
+    }
+
+    private fun fullscreenParams(touchable: Boolean): WindowManager.LayoutParams {
+        val flags = if (touchable) {
+            OverlayLayout.WINDOW_FLAGS
+        } else {
+            OverlayLayout.WINDOW_FLAGS or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        }
         return WindowManager.LayoutParams(
-            w,
-            h,
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT,
             OverlayLayout.TYPE_APPLICATION_OVERLAY,
-            OverlayLayout.WINDOW_FLAGS,
+            flags,
             PixelFormat.TRANSLUCENT,
         ).apply {
+            alpha = 1f
             @Suppress("DEPRECATION")
             gravity = Gravity.TOP or Gravity.LEFT
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -312,62 +506,45 @@ internal class OverlayWindow(
         }
     }
 
-    private fun applyWindowSize(initial: Boolean) {
+    private fun applyStageSize() {
         val (sw, sh) = screenSize()
-        lastScreenW = sw
-        lastScreenH = sh
-        val (w, h) = OverlayLayout.windowSizePx(sizeName(), density(), sw, sh)
-        val chrome = OverlayLayout.chromePx(density())
-        val stage = (h - chrome).coerceAtLeast(1)
-        val webParams = web.layoutParams as FrameLayout.LayoutParams
-        val chromeParams = chromeBar.layoutParams as FrameLayout.LayoutParams
-        params.width = w
-        params.height = h
-        if (chromeParams.height != chrome) {
-            chromeParams.height = chrome
-            chromeBar.layoutParams = chromeParams
-        }
-        if (webParams.height != stage) {
-            webParams.height = stage
-            web.layoutParams = webParams
-        }
-        val (x, y) = if (initial && !placed) {
-            placed = true
-            OverlayLayout.initialPosition(w, h, sw, sh, density())
-        } else {
-            OverlayLayout.clamp(params.x, params.y, w, h, sw, sh)
-        }
-        if (dragging && (x != params.x || y != params.y)) {
-            startX = x
-            startY = y
-            downRawX = lastRawX
-            downRawY = lastRawY
-        }
-        params.x = x
-        params.y = y
+        params.width = sw
+        params.height = sh
+        params.x = 0
+        params.y = 0
     }
 
     private fun relayout() {
         if (!attached || destroyed) return
-        applyWindowSize(initial = false)
-        updateLayout()
-        if (pageReady) {
-            web.evaluateJavascript("window.dispatchEvent(new Event('resize'))", null)
-        }
-    }
-
-    private fun updateLayout() {
-        if (!attached || destroyed) return
+        applyStageSize()
         try {
             windowManager.updateViewLayout(root, params)
         } catch (error: IllegalArgumentException) {
-            Log.w(TAG, "overlay layout update skipped", error)
-            attached = false
-        } catch (error: SecurityException) {
-            Log.w(TAG, "overlay permission lost during layout", error)
-            attached = false
-            if (!closing && !destroyed) handler.post { onUnexpectedDetach() }
+            Log.w(TAG, "stage update skipped", error)
         }
+        resizeActions()
+        if (pageReady) web.evaluateJavascript("window.dispatchEvent(new Event('resize'))", null)
+    }
+
+    private fun removeIfAttached(view: View, isAttached: Boolean) {
+        if (!isAttached) return
+        try {
+            windowManager.removeViewImmediate(view)
+        } catch (error: IllegalArgumentException) {
+            Log.w(TAG, "extra window already gone", error)
+        }
+    }
+
+    private fun cssX(rawX: Float): Float {
+        val loc = IntArray(2)
+        web.getLocationOnScreen(loc)
+        return (rawX - loc[0]) / density()
+    }
+
+    private fun cssY(rawY: Float): Float {
+        val loc = IntArray(2)
+        web.getLocationOnScreen(loc)
+        return (rawY - loc[1]) / density()
     }
 
     private fun screenSize(): Pair<Int, Int> {
@@ -384,8 +561,7 @@ internal class OverlayWindow(
 
     private fun registerDisplayCallbacks() {
         uiContext.registerComponentCallbacks(componentCallbacks)
-        uiContext.getSystemService(DisplayManager::class.java)
-            .registerDisplayListener(displayListener, handler)
+        uiContext.getSystemService(DisplayManager::class.java).registerDisplayListener(displayListener, handler)
     }
 
     private fun unregisterDisplayCallbacks() {
@@ -395,14 +571,11 @@ internal class OverlayWindow(
             Log.w(TAG, "overlay callbacks already gone", error)
         }
         try {
-            uiContext.getSystemService(DisplayManager::class.java)
-                .unregisterDisplayListener(displayListener)
+            uiContext.getSystemService(DisplayManager::class.java).unregisterDisplayListener(displayListener)
         } catch (error: IllegalArgumentException) {
             Log.w(TAG, "overlay display listener already gone", error)
         }
     }
-
-    private var webDestroyed = false
 
     private fun destroyWebView() {
         if (webDestroyed) return
@@ -413,6 +586,7 @@ internal class OverlayWindow(
             web.webChromeClient = null
             web.webViewClient = WebViewClient()
             web.removeJavascriptInterface(BRIDGE_NAME)
+            web.removeJavascriptInterface(OVERLAY_BRIDGE)
             (web.parent as? android.view.ViewGroup)?.removeView(web)
             web.destroy()
         } catch (error: RuntimeException) {
@@ -421,61 +595,23 @@ internal class OverlayWindow(
     }
 
     private fun prefs() = appContext.getSharedPreferences(BluefinStore.PREFS, Context.MODE_PRIVATE)
-
     private fun sizeName(): String = prefs().getString(BluefinStore.KEY_SIZE, "medium") ?: "medium"
-
     private fun soundOn(): Boolean = prefs().getBoolean(BluefinStore.KEY_SOUND, true)
-
-    private fun density(): Float = uiContext.resources.displayMetrics.density
+    private fun density(): Float = uiContext.resources.displayMetrics.density.coerceAtLeast(0.5f)
+    private fun dp(value: Int): Int = (value * density()).roundToInt()
 
     private companion object {
         const val TAG = "BluefinOverlay"
         const val BRIDGE_NAME = "BluefinNative"
-        val OVERLAY_CHROME_JS = """
-            (function () {
-              var id = 'bluefin-overlay-style';
-              var style = document.getElementById(id);
-              if (!style) {
-                style = document.createElement('style');
-                style.id = id;
-                document.head.appendChild(style);
-              }
-              style.textContent = [
-                'html,body{background:transparent!important;overflow:hidden!important;margin:0!important}',
-                'main{padding:0!important;height:100%!important;display:block!important}',
-                '#wrap{height:100%!important;display:block!important}',
-                'header,#panel,#hint,#events,#stage:after{display:none!important}',
-                '#stage{position:fixed!important;left:0!important;top:0!important;',
-                'right:0!important;bottom:0!important;width:100%!important;height:100%!important;',
-                'min-width:0!important;min-height:0!important;background:transparent!important;border:0!important}'
-              ].join('');
-              if (window.__bluefinOverlayResize) clearInterval(window.__bluefinOverlayResize);
-              var tries = 0;
-              window.__bluefinOverlayResize = setInterval(function () {
-                window.dispatchEvent(new Event('resize'));
-                if (++tries >= 12) {
-                  clearInterval(window.__bluefinOverlayResize);
-                  window.__bluefinOverlayResize = 0;
-                }
-              }, 300);
-            })();
-        """.trimIndent()
+        const val OVERLAY_BRIDGE = "BluefinOverlay"
 
         fun createUiContext(app: Context): Context {
-            // Application context is not a display context, so the one-arg
-            // createWindowContext fails. API 31+ can bind the overlay type to
-            // the default display and follow rotation independently of the
-            // portrait-locked activity.
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return app
             return try {
                 val display = app.getSystemService(DisplayManager::class.java)
                     .getDisplay(Display.DEFAULT_DISPLAY)
                     ?: return app
-                app.createWindowContext(
-                    display,
-                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                    null,
-                )
+                app.createWindowContext(display, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, null)
             } catch (error: RuntimeException) {
                 Log.w(TAG, "window context unavailable, using application context", error)
                 app
@@ -489,7 +625,14 @@ internal class OverlayWindow(
             check(OverlayLayout.FLAG_NOT_TOUCH_MODAL == WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL)
             check(OverlayLayout.FLAG_LAYOUT_IN_SCREEN == WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN)
             check(OverlayLayout.FLAG_HARDWARE_ACCELERATED == WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED)
-            check(OverlayLayout.WINDOW_FLAGS and OverlayLayout.FLAG_NOT_TOUCHABLE == 0)
         }
+    }
+}
+
+@Keep
+internal class OverlayLayoutSink(private val deliver: (String) -> Unit) {
+    @JavascriptInterface
+    fun layout(json: String?) {
+        if (!json.isNullOrBlank()) deliver(json)
     }
 }

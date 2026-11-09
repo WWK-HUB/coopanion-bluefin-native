@@ -440,6 +440,11 @@ class MainActivity : AppCompatActivity(), BluefinHost {
     }
 
     private fun consumeOverlayIntent(source: Intent?) {
+        if (source?.action == BluefinForegroundService.ACTION_RETURN) {
+            source.action = null
+            android.util.Log.i("BluefinOverlay", "notification return")
+            return
+        }
         if (source?.action != OverlayLauncher.ACTION_OVERLAY_GUIDE) return
         source.action = null
         pendingOverlayGuide = true

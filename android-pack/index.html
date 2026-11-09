@@ -76,6 +76,10 @@ let scale = 1;
 let demoTimer = 0;
 
 function preferredScale() {
+  if (typeof window.__bluefinForceScale === 'number' && Number.isFinite(window.__bluefinForceScale)) {
+    const forced = Math.max(0.7, Math.min(1, Math.round(window.__bluefinForceScale * 100) / 100));
+    return forced;
+  }
   const h = stage.clientHeight;
   const w = stage.clientWidth;
   if (h < 40 || w < 40) return 1;
@@ -86,6 +90,10 @@ function smallerScale() {
   return Math.max(0.42, Math.round(preferredScale() * 0.67 * 100) / 100);
 }
 function bounds() {
+  if (typeof window.__bluefinForceScale === 'number' && Number.isFinite(window.__bluefinForceScale)) {
+    scale = Math.max(0.7, Math.min(1, Math.round(window.__bluefinForceScale * 100) / 100));
+  }
+  window.__bluefinScale = scale;
   return { W: stage.clientWidth, H: stage.clientHeight, floorY: stage.clientHeight - 40, S: scale };
 }
 const imgs = new Map();

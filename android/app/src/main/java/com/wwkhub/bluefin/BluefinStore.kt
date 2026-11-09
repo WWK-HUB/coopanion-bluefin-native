@@ -8,4 +8,6 @@ internal object BluefinStore {
     const val KEY_HIDDEN = "pet_hidden"
     const val KEY_SIZE = "pet_size"
     const val KEY_OVERLAY = "overlay_on"
+    const val KEY_OVERLAY_AWAITING = "overlay_awaiting_settings"
+    const val KEY_OVERLAY_PROMPT_DISMISSED = "overlay_prompt_dismissed"
 }

@@ -71,7 +71,9 @@ class BluefinForegroundService : Service() {
     }
 
     private fun overlayAction(showing: Boolean): PendingIntent {
-        val needsGuide = !showing && !Settings.canDrawOverlays(this)
+        val needsGuide = !showing &&
+            !Settings.canDrawOverlays(this) &&
+            !OverlayLauncher.isPromptDismissed(this)
         val flags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         return if (needsGuide) {
             PendingIntent.getActivity(

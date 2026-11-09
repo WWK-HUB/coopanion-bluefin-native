@@ -96,6 +96,22 @@ class OverlayLayoutTest {
         assertEquals(OverlayPermissionSession.Result.Denied, session.onResume(canDraw = false))
         assertEquals(OverlayPermissionSession.Result.Idle, session.onResume(canDraw = false))
         assertFalse(session.awaitingSettings)
+        assertTrue(session.promptDismissed)
+    }
+
+    @Test
+    fun declinedPromptSurvivesANewSessionUntilReset() {
+        val first = OverlayPermissionSession()
+        first.onDeclinedInApp()
+        val restored = OverlayPermissionSession(
+            awaiting = first.awaitingSettings,
+            dismissed = first.promptDismissed,
+        )
+        assertFalse(restored.shouldOfferGuide())
+        assertEquals(OverlayPermissionSession.Result.Idle, restored.onResume(canDraw = false))
+        restored.onResetPrompt()
+        assertTrue(restored.shouldOfferGuide())
+        assertFalse(restored.promptDismissed)
     }
 
     @Test
@@ -116,8 +132,9 @@ class OverlayLayoutTest {
         assertTrue(strings.contains(">显示悬浮窗<"))
         assertTrue(strings.contains(">隐藏悬浮窗<"))
         val gradle = File("build.gradle.kts").readText()
-        assertTrue(gradle.contains("versionName = \"0.2.1-preview\""))
-        assertTrue(gradle.contains("versionCode = 3"))
+        assertTrue(gradle.contains("versionName = \"0.2.2-preview\""))
+        assertTrue(gradle.contains("versionCode = 4"))
+        assertTrue(strings.contains("重新询问悬浮窗权限"))
         val manifest = File("src/main/AndroidManifest.xml").readText()
         assertTrue(manifest.contains("android.permission.SYSTEM_ALERT_WINDOW"))
         assertFalse(manifest.contains("SYSTEM_ALERT_WINDOW\" tools:node=\"remove\""))

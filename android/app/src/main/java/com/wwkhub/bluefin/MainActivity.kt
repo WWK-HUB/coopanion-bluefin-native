@@ -349,6 +349,9 @@ class MainActivity : AppCompatActivity(), BluefinHost {
         }
         OverlayLauncher.addListener(overlayListener)
         dialog.setOnDismissListener { OverlayLauncher.removeListener(overlayListener) }
+        view.findViewById<View>(R.id.overlay_prompt_reset).setOnClickListener {
+            OverlayLauncher.resetPrompt(this)
+        }
         sound.setOnCheckedChangeListener { _, checked ->
             soundOn = checked
             prefs().edit().putBoolean(KEY_SOUND, checked).apply()

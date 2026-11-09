@@ -28,7 +28,8 @@ internal object OverlayLauncher {
         fun onOverlayVisibilityChanged(showing: Boolean)
     }
 
-    private val session = OverlayPermissionSession()
+    private var session = OverlayPermissionSession()
+    private var sessionLoaded = false
     private val listeners = LinkedHashSet<Listener>()
     private val handler = Handler(Looper.getMainLooper())
     // Application/window context, released in hide(). Not an Activity.
@@ -69,7 +70,10 @@ internal object OverlayLauncher {
         when (OverlayLayout.decideToggle(isShowing(), Settings.canDrawOverlays(context))) {
             OverlayLayout.Toggle.Hide -> hide(context, returnToApp = false, toast = false, updateNotification = false)
             OverlayLayout.Toggle.Show -> show(context, toast = true, updateNotification = false)
-            OverlayLayout.Toggle.NeedPermission -> openGuideFromBackground(context)
+            OverlayLayout.Toggle.NeedPermission -> {
+                if (session(context).shouldOfferGuide()) openGuideFromBackground(context)
+                else bringAppForward(context)
+            }
         }
     }
 
@@ -77,9 +81,14 @@ internal object OverlayLauncher {
         appContext = activity.applicationContext
         val revokedNow = window != null && !Settings.canDrawOverlays(activity)
         if (revokedNow) onPermissionRevoked(activity)
-        when (session.onResume(Settings.canDrawOverlays(activity))) {
-            OverlayPermissionSession.Result.Granted -> show(activity, toast = true)
+        when (session(activity).onResume(Settings.canDrawOverlays(activity))) {
+            OverlayPermissionSession.Result.Granted -> {
+                persistSession(activity)
+                show(activity, toast = true)
+            }
             OverlayPermissionSession.Result.Denied -> {
+                persistSession(activity)
+                BluefinForegroundService.refresh(activity)
                 if (!revokedNow) {
                     Toast.makeText(activity, R.string.overlay_permission_denied, Toast.LENGTH_LONG).show()
                 }
@@ -87,6 +96,12 @@ internal object OverlayLauncher {
             }
             OverlayPermissionSession.Result.Idle -> Unit
         }
+    }
+
+    fun isPromptDismissed(context: Context): Boolean = session(context).promptDismissed
+
+    fun resetPrompt(activity: Activity) {
+        showGuide(activity, force = true)
     }
 
     fun restoreIfEnabled(context: Context) {
@@ -113,7 +128,12 @@ internal object OverlayLauncher {
             created = candidate
             candidate.show()
             window = candidate
-            prefs(app).edit().putBoolean(BluefinStore.KEY_OVERLAY, true).apply()
+            session(app).onResetPrompt()
+            prefs(app).edit()
+                .putBoolean(BluefinStore.KEY_OVERLAY, true)
+                .putBoolean(BluefinStore.KEY_OVERLAY_AWAITING, false)
+                .putBoolean(BluefinStore.KEY_OVERLAY_PROMPT_DISMISSED, false)
+                .apply()
             startWatching(app)
             dispatch()
             if (updateNotification) BluefinForegroundService.refresh(app)
@@ -154,8 +174,15 @@ internal object OverlayLauncher {
         if (returnToApp) bringAppForward(app)
     }
 
-    fun showGuide(activity: Activity) {
+    fun showGuide(activity: Activity, force: Boolean = false) {
         if (activity.isFinishing || activity.isDestroyed) return
+        val current = session(activity)
+        if (force) {
+            current.onResetPrompt()
+            persistSession(activity)
+        } else if (!current.shouldOfferGuide()) {
+            return
+        }
         if (Settings.canDrawOverlays(activity)) {
             show(activity, toast = true)
             return
@@ -166,12 +193,12 @@ internal object OverlayLauncher {
             .setTitle(R.string.overlay_permission_title)
             .setMessage(R.string.overlay_permission_message)
             .setNegativeButton(R.string.overlay_permission_later) { _, _ ->
-                session.onDeclinedInApp()
+                declinePrompt(activity)
             }
             .setPositiveButton(R.string.overlay_permission_go) { _, _ ->
                 openSettings(activity)
             }
-            .setOnCancelListener { session.onDeclinedInApp() }
+            .setOnCancelListener { declinePrompt(activity) }
             .setOnDismissListener { guideShowing = false }
             .show()
     }
@@ -220,12 +247,12 @@ internal object OverlayLauncher {
         )
         try {
             activity.startActivity(direct)
-            session.onOpenSettings()
+            markAwaitingSettings(activity)
         } catch (error: RuntimeException) {
             Log.d(TAG, "package overlay settings unavailable, trying generic", error)
             try {
                 activity.startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION))
-                session.onOpenSettings()
+                markAwaitingSettings(activity)
             } catch (fallback: RuntimeException) {
                 Log.w(TAG, "overlay settings page unavailable", fallback)
                 Toast.makeText(activity, R.string.overlay_open_failed, Toast.LENGTH_LONG).show()
@@ -286,6 +313,37 @@ internal object OverlayLauncher {
     private fun dispatch() {
         val showing = isShowing()
         listeners.toList().forEach { it.onOverlayVisibilityChanged(showing) }
+    }
+
+    private fun declinePrompt(activity: Activity) {
+        session(activity).onDeclinedInApp()
+        persistSession(activity)
+        BluefinForegroundService.refresh(activity)
+    }
+
+    private fun markAwaitingSettings(activity: Activity) {
+        session(activity).onOpenSettings()
+        persistSession(activity)
+    }
+
+    private fun session(context: Context): OverlayPermissionSession {
+        if (!sessionLoaded) {
+            val stored = prefs(context)
+            session = OverlayPermissionSession(
+                awaiting = stored.getBoolean(BluefinStore.KEY_OVERLAY_AWAITING, false),
+                dismissed = stored.getBoolean(BluefinStore.KEY_OVERLAY_PROMPT_DISMISSED, false),
+            )
+            sessionLoaded = true
+        }
+        return session
+    }
+
+    private fun persistSession(context: Context) {
+        val current = session(context)
+        prefs(context).edit()
+            .putBoolean(BluefinStore.KEY_OVERLAY_AWAITING, current.awaitingSettings)
+            .putBoolean(BluefinStore.KEY_OVERLAY_PROMPT_DISMISSED, current.promptDismissed)
+            .apply()
     }
 
     private fun prefs(context: Context) =

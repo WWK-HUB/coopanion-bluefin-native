@@ -110,13 +110,22 @@ internal object OverlayLayout {
 }
 
 /**
- * One-shot permission handoff. Opening system settings arms a single
- * re-check; declining in the app, or coming back without that handoff,
- * does not ask again.
+ * Permission handoff that can be saved and restored.
+ *
+ * Opening system settings arms a single re-check. Declining in the app, or
+ * coming back without permission, dismisses the guide until Settings resets it.
  */
-internal class OverlayPermissionSession {
-    var awaitingSettings: Boolean = false
+internal class OverlayPermissionSession(
+    awaiting: Boolean = false,
+    dismissed: Boolean = false,
+) {
+    var awaitingSettings: Boolean = awaiting
         private set
+
+    var promptDismissed: Boolean = dismissed
+        private set
+
+    fun shouldOfferGuide(): Boolean = !promptDismissed
 
     fun onOpenSettings() {
         awaitingSettings = true
@@ -124,12 +133,24 @@ internal class OverlayPermissionSession {
 
     fun onDeclinedInApp() {
         awaitingSettings = false
+        promptDismissed = true
+    }
+
+    fun onResetPrompt() {
+        awaitingSettings = false
+        promptDismissed = false
     }
 
     fun onResume(canDraw: Boolean): Result {
         if (!awaitingSettings) return Result.Idle
         awaitingSettings = false
-        return if (canDraw) Result.Granted else Result.Denied
+        return if (canDraw) {
+            promptDismissed = false
+            Result.Granted
+        } else {
+            promptDismissed = true
+            Result.Denied
+        }
     }
 
     enum class Result {

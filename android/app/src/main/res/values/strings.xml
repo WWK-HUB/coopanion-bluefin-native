@@ -42,6 +42,8 @@
     <string name="overlay_button">悬浮窗</string>
     <string name="overlay_switch">悬浮窗</string>
     <string name="overlay_switch_help">打开后蓝鳍浮在其他应用上层，可以走动、被戳和拖拽。关闭后只留在应用里。需要「显示在其他应用上层」权限。</string>
+    <string name="overlay_prompt_reset">重新询问悬浮窗权限</string>
+    <string name="overlay_prompt_reset_help">若之前选了「先在应用内用」或没有允许，说明不会自动再出现。点这里会重新显示，然后可以再开启悬浮窗。</string>
     <string name="overlay_close">关闭悬浮窗</string>
     <string name="overlay_closed">悬浮窗已关闭。</string>
     <string name="overlay_drag_handle">拖动悬浮窗</string>

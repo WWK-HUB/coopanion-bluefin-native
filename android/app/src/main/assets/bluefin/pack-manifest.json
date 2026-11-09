@@ -1,0 +1,484 @@
+{
+  "format": "bluefin-android-webview-pack",
+  "formatVersion": 1,
+  "id": "bluefin-native",
+  "version": "1.0.0",
+  "name": {
+    "zh": "蓝鳍 · 原画互动版",
+    "en": "Bluefin · Native Animation"
+  },
+  "entry": "index.html",
+  "pathsRelativeTo": "index.html",
+  "relativePaths": "All resource URLs used by index.html are relative to index.html. kit/body.js imports ./rig.js relative to itself; that file is kit/rig.js beside index.html.",
+  "pathNote": "index.html 引用的模块、figure.json 和图片都以 index.html 所在目录为基准（./figure.js、./kit/body.js、./figure.json、assets/<姿势>.png）。kit/body.js 再按 ES 模块规则相对自身导入 ./rig.js，对应文件是 kit/rig.js。不要改成绝对 URL 或 base64。",
+  "targetAppPath": "assets/bluefin/",
+  "webviewEntry": "https://appassets.androidplatform.net/assets/bluefin/index.html",
+  "copyInstruction": "copy contents of android-pack/ into assets/bluefin/",
+  "copy": {
+    "from": "android-pack/",
+    "to": "android/app/src/main/assets/bluefin/",
+    "instruction": "copy contents of android-pack/ into assets/bluefin/"
+  },
+  "png": {
+    "mode": "lossless-oxipng",
+    "tool": "oxipng 10.2.1",
+    "args": [
+      "-o",
+      "4"
+    ],
+    "alphaRewrite": false,
+    "rescale": false,
+    "source": "bluefin-native/assets"
+  },
+  "byteCopies": {
+    "figure.js": "92463485c81bc8ebc52672eef5d60a63d244262574a5dc243e1720a2ebf6da51",
+    "figure.json": "da6a75f83d29c389c951cf000065850b4e02777397d70b57558c6ad03ff28668",
+    "kit/body.js": "9be695542ab8d706994f0376ccfa7fb294bc98a04b2118119711bda99a2e8f9d",
+    "kit/rig.js": "9751ad311707423a0899c4f45a412d1496173fda7c0a1c694546125c4f6ad00b"
+  },
+  "poseCount": 64,
+  "totalBytes": 11005675,
+  "fileCount": 73,
+  "requiredFiles": [
+    "index.html",
+    "figure.js",
+    "figure.json",
+    "kit/body.js",
+    "kit/rig.js",
+    "assets/angry.png",
+    "assets/back.png",
+    "assets/bow_0.png",
+    "assets/bow_1.png",
+    "assets/bow_2.png",
+    "assets/bow_3.png",
+    "assets/closed.png",
+    "assets/crouch.png",
+    "assets/cry.png",
+    "assets/dance_0.png",
+    "assets/dance_1.png",
+    "assets/dance_2.png",
+    "assets/dance_3.png",
+    "assets/dizzy_0.png",
+    "assets/dizzy_1.png",
+    "assets/dizzy_2.png",
+    "assets/dizzy_3.png",
+    "assets/excited.png",
+    "assets/fall.png",
+    "assets/happy.png",
+    "assets/jump.png",
+    "assets/lift_0.png",
+    "assets/lift_1.png",
+    "assets/lift_2.png",
+    "assets/lift_3.png",
+    "assets/lift_seed.png",
+    "assets/love.png",
+    "assets/neutral.png",
+    "assets/nod_0.png",
+    "assets/nod_1.png",
+    "assets/nod_2.png",
+    "assets/nod_3.png",
+    "assets/prone.png",
+    "assets/run_0.png",
+    "assets/run_1.png",
+    "assets/run_2.png",
+    "assets/run_3.png",
+    "assets/sad.png",
+    "assets/shake_0.png",
+    "assets/shake_1.png",
+    "assets/shake_2.png",
+    "assets/shake_3.png",
+    "assets/shy.png",
+    "assets/side.png",
+    "assets/sit.png",
+    "assets/sit_happy.png",
+    "assets/sleep.png",
+    "assets/smug.png",
+    "assets/stretch.png",
+    "assets/talk.png",
+    "assets/thinking.png",
+    "assets/thumb.png",
+    "assets/walk_0.png",
+    "assets/walk_1.png",
+    "assets/walk_2.png",
+    "assets/walk_3.png",
+    "assets/walk_4.png",
+    "assets/walk_5.png",
+    "assets/walk_6.png",
+    "assets/walk_7.png",
+    "assets/wave_0.png",
+    "assets/wave_1.png",
+    "assets/wave_2.png",
+    "assets/wave_3.png",
+    "assets/wave_seed.png",
+    "frames-index.json",
+    "README.md",
+    "pack-manifest.json"
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "bytes": 10622,
+      "role": "entry"
+    },
+    {
+      "path": "figure.js",
+      "bytes": 8344,
+      "role": "module"
+    },
+    {
+      "path": "figure.json",
+      "bytes": 10366,
+      "role": "metadata"
+    },
+    {
+      "path": "kit/body.js",
+      "bytes": 58421,
+      "role": "module"
+    },
+    {
+      "path": "kit/rig.js",
+      "bytes": 11323,
+      "role": "module"
+    },
+    {
+      "path": "assets/angry.png",
+      "bytes": 178539,
+      "role": "frame"
+    },
+    {
+      "path": "assets/back.png",
+      "bytes": 156687,
+      "role": "frame"
+    },
+    {
+      "path": "assets/bow_0.png",
+      "bytes": 156220,
+      "role": "frame"
+    },
+    {
+      "path": "assets/bow_1.png",
+      "bytes": 147669,
+      "role": "frame"
+    },
+    {
+      "path": "assets/bow_2.png",
+      "bytes": 139189,
+      "role": "frame"
+    },
+    {
+      "path": "assets/bow_3.png",
+      "bytes": 154632,
+      "role": "frame"
+    },
+    {
+      "path": "assets/closed.png",
+      "bytes": 168034,
+      "role": "frame"
+    },
+    {
+      "path": "assets/crouch.png",
+      "bytes": 153773,
+      "role": "frame"
+    },
+    {
+      "path": "assets/cry.png",
+      "bytes": 177631,
+      "role": "frame"
+    },
+    {
+      "path": "assets/dance_0.png",
+      "bytes": 195379,
+      "role": "frame"
+    },
+    {
+      "path": "assets/dance_1.png",
+      "bytes": 185693,
+      "role": "frame"
+    },
+    {
+      "path": "assets/dance_2.png",
+      "bytes": 196360,
+      "role": "frame"
+    },
+    {
+      "path": "assets/dance_3.png",
+      "bytes": 204686,
+      "role": "frame"
+    },
+    {
+      "path": "assets/dizzy_0.png",
+      "bytes": 172578,
+      "role": "frame"
+    },
+    {
+      "path": "assets/dizzy_1.png",
+      "bytes": 171757,
+      "role": "frame"
+    },
+    {
+      "path": "assets/dizzy_2.png",
+      "bytes": 173643,
+      "role": "frame"
+    },
+    {
+      "path": "assets/dizzy_3.png",
+      "bytes": 173790,
+      "role": "frame"
+    },
+    {
+      "path": "assets/excited.png",
+      "bytes": 187002,
+      "role": "frame"
+    },
+    {
+      "path": "assets/fall.png",
+      "bytes": 169696,
+      "role": "frame"
+    },
+    {
+      "path": "assets/happy.png",
+      "bytes": 173818,
+      "role": "frame"
+    },
+    {
+      "path": "assets/jump.png",
+      "bytes": 163246,
+      "role": "frame"
+    },
+    {
+      "path": "assets/lift_0.png",
+      "bytes": 181224,
+      "role": "frame"
+    },
+    {
+      "path": "assets/lift_1.png",
+      "bytes": 173823,
+      "role": "frame"
+    },
+    {
+      "path": "assets/lift_2.png",
+      "bytes": 177357,
+      "role": "frame"
+    },
+    {
+      "path": "assets/lift_3.png",
+      "bytes": 171751,
+      "role": "frame"
+    },
+    {
+      "path": "assets/lift_seed.png",
+      "bytes": 174752,
+      "role": "frame"
+    },
+    {
+      "path": "assets/love.png",
+      "bytes": 191046,
+      "role": "frame"
+    },
+    {
+      "path": "assets/neutral.png",
+      "bytes": 166329,
+      "role": "frame"
+    },
+    {
+      "path": "assets/nod_0.png",
+      "bytes": 180269,
+      "role": "frame"
+    },
+    {
+      "path": "assets/nod_1.png",
+      "bytes": 177913,
+      "role": "frame"
+    },
+    {
+      "path": "assets/nod_2.png",
+      "bytes": 169393,
+      "role": "frame"
+    },
+    {
+      "path": "assets/nod_3.png",
+      "bytes": 180225,
+      "role": "frame"
+    },
+    {
+      "path": "assets/prone.png",
+      "bytes": 127724,
+      "role": "frame"
+    },
+    {
+      "path": "assets/run_0.png",
+      "bytes": 181832,
+      "role": "frame"
+    },
+    {
+      "path": "assets/run_1.png",
+      "bytes": 168741,
+      "role": "frame"
+    },
+    {
+      "path": "assets/run_2.png",
+      "bytes": 176290,
+      "role": "frame"
+    },
+    {
+      "path": "assets/run_3.png",
+      "bytes": 174367,
+      "role": "frame"
+    },
+    {
+      "path": "assets/sad.png",
+      "bytes": 164631,
+      "role": "frame"
+    },
+    {
+      "path": "assets/shake_0.png",
+      "bytes": 179977,
+      "role": "frame"
+    },
+    {
+      "path": "assets/shake_1.png",
+      "bytes": 183254,
+      "role": "frame"
+    },
+    {
+      "path": "assets/shake_2.png",
+      "bytes": 178916,
+      "role": "frame"
+    },
+    {
+      "path": "assets/shake_3.png",
+      "bytes": 183063,
+      "role": "frame"
+    },
+    {
+      "path": "assets/shy.png",
+      "bytes": 156219,
+      "role": "frame"
+    },
+    {
+      "path": "assets/side.png",
+      "bytes": 167994,
+      "role": "frame"
+    },
+    {
+      "path": "assets/sit.png",
+      "bytes": 145713,
+      "role": "frame"
+    },
+    {
+      "path": "assets/sit_happy.png",
+      "bytes": 163354,
+      "role": "frame"
+    },
+    {
+      "path": "assets/sleep.png",
+      "bytes": 116484,
+      "role": "frame"
+    },
+    {
+      "path": "assets/smug.png",
+      "bytes": 188929,
+      "role": "frame"
+    },
+    {
+      "path": "assets/stretch.png",
+      "bytes": 154720,
+      "role": "frame"
+    },
+    {
+      "path": "assets/talk.png",
+      "bytes": 164957,
+      "role": "frame"
+    },
+    {
+      "path": "assets/thinking.png",
+      "bytes": 169738,
+      "role": "frame"
+    },
+    {
+      "path": "assets/thumb.png",
+      "bytes": 50893,
+      "role": "thumb"
+    },
+    {
+      "path": "assets/walk_0.png",
+      "bytes": 152364,
+      "role": "frame"
+    },
+    {
+      "path": "assets/walk_1.png",
+      "bytes": 163646,
+      "role": "frame"
+    },
+    {
+      "path": "assets/walk_2.png",
+      "bytes": 153885,
+      "role": "frame"
+    },
+    {
+      "path": "assets/walk_3.png",
+      "bytes": 159669,
+      "role": "frame"
+    },
+    {
+      "path": "assets/walk_4.png",
+      "bytes": 161223,
+      "role": "frame"
+    },
+    {
+      "path": "assets/walk_5.png",
+      "bytes": 165742,
+      "role": "frame"
+    },
+    {
+      "path": "assets/walk_6.png",
+      "bytes": 157261,
+      "role": "frame"
+    },
+    {
+      "path": "assets/walk_7.png",
+      "bytes": 165173,
+      "role": "frame"
+    },
+    {
+      "path": "assets/wave_0.png",
+      "bytes": 159282,
+      "role": "frame"
+    },
+    {
+      "path": "assets/wave_1.png",
+      "bytes": 171539,
+      "role": "frame"
+    },
+    {
+      "path": "assets/wave_2.png",
+      "bytes": 169587,
+      "role": "frame"
+    },
+    {
+      "path": "assets/wave_3.png",
+      "bytes": 168605,
+      "role": "frame"
+    },
+    {
+      "path": "assets/wave_seed.png",
+      "bytes": 175390,
+      "role": "frame"
+    },
+    {
+      "path": "frames-index.json",
+      "bytes": 24332,
+      "role": "index"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6698,
+      "role": "doc"
+    },
+    {
+      "path": "pack-manifest.json",
+      "bytes": 10303,
+      "role": "manifest"
+    }
+  ]
+}

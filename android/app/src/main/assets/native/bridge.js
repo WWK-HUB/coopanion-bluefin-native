@@ -221,6 +221,36 @@
 
   fitStage();
   installStageGestures();
+  (function watchTouches() {
+    var seen = 0;
+    setInterval(function () {
+      var ev = window.qa && window.qa.events;
+      var body = window.qa && window.qa.body;
+      if (!ev || !body || !window.BluefinNative || !window.BluefinNative.report) return;
+      while (seen < ev.length) {
+        var item = ev[seen++];
+        var reaction = item && item.kind;
+        if (["poke", "pet", "grab", "throw", "drop"].indexOf(reaction) < 0) continue;
+        var hits = [];
+        var mode = "";
+        try {
+          var layout = body.layout();
+          mode = layout.mode || "";
+          hits = (layout.hit || []).map(function (h) {
+            return Math.round(h.x) + "," + Math.round(h.y) + ",r" + Math.round(h.r);
+          });
+        } catch (err) {}
+        var surface = window.__bluefinOverlay ? "overlay" : "in-app";
+        window.BluefinNative.report(
+          "touch surface=" + surface +
+          " reaction=" + reaction +
+          " mode=" + mode +
+          " scale=" + (window.__bluefinScale || "") +
+          " hits=" + hits.join(";")
+        );
+      }
+    }, 200);
+  })();
   window.__bluefinNative = {
     act: act,
     reset: reset,

@@ -67,6 +67,7 @@ internal object OverlayLauncher {
     }
 
     fun onNotificationToggle(context: Context) {
+        Log.i(TAG, "notification toggle showing=${isShowing()}")
         when (OverlayLayout.decideToggle(isShowing(), Settings.canDrawOverlays(context))) {
             OverlayLayout.Toggle.Hide -> hide(context, returnToApp = false, toast = false, updateNotification = false)
             OverlayLayout.Toggle.Show -> show(context, toast = true, updateNotification = false)
@@ -128,6 +129,7 @@ internal object OverlayLauncher {
             created = candidate
             candidate.show()
             window = candidate
+            Log.i(TAG, "overlay shown")
             session(app).onResetPrompt()
             prefs(app).edit()
                 .putBoolean(BluefinStore.KEY_OVERLAY, true)
@@ -165,6 +167,7 @@ internal object OverlayLauncher {
         window = null
         stopWatching()
         current?.close()
+        Log.i(TAG, "overlay hidden hadWindow=${current != null}")
         prefs(app).edit().putBoolean(BluefinStore.KEY_OVERLAY, false).apply()
         dispatch()
         if (updateNotification) BluefinForegroundService.refresh(app)

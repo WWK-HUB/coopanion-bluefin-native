@@ -93,6 +93,7 @@ function bounds() {
   if (typeof window.__bluefinForceScale === 'number' && Number.isFinite(window.__bluefinForceScale)) {
     scale = Math.max(0.7, Math.min(1, Math.round(window.__bluefinForceScale * 100) / 100));
   }
+  window.__bluefinScale = scale;
   return { W: stage.clientWidth, H: stage.clientHeight, floorY: stage.clientHeight - 40, S: scale };
 }
 const imgs = new Map();

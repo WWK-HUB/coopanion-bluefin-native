@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">蓝鳍</string>
+    <string name="loading">正在醒来…</string>
+    <string name="load_timeout">预览加载超时。请重试。若仍失败，确认安装包里包含 bluefin/index.html。</string>
+    <string name="missing_route_b">没有找到 bluefin/index.html。可玩预览需要完整资源：index.html、figure.js、figure.json、kit/ 和 assets/。</string>
+    <string name="missing_asset">没有找到资源：%1$s</string>
+    <string name="retry">重试</string>
+    <string name="open_actions">动作</string>
+    <string name="open_settings">设置</string>
+    <string name="actions_title">动作</string>
+    <string name="action_wave">挥手</string>
+    <string name="action_walk">行走</string>
+    <string name="action_run">跑步</string>
+    <string name="action_dance">跳舞</string>
+    <string name="action_sleep">睡觉</string>
+    <string name="settings_title">设置</string>
+    <string name="sound">音效</string>
+    <string name="sound_help">关闭后静音页面中的声音。离线预览若没有接上音效，这个开关仍会记住偏好，并静音 WebView 里的媒体。</string>
+    <string name="reset">重置引导与角色</string>
+    <string name="reset_title">重置</string>
+    <string name="reset_message">会重新显示三步提示，并让蓝鳍回到站立。音效开关保持不变。</string>
+    <string name="reset_confirm">重置</string>
+    <string name="cancel">取消</string>
+    <string name="about_title">关于</string>
+    <string name="about">版本 %1$s\n\n蓝鳍可玩预览版，侧载安装，可离线互动。画面内嵌本仓库的 Bluefin 离线预览；互动引擎来自 Pal AI Lab 的 Coopanion。\n\n本预览不包含悬浮窗、AI 对话和多角色。</string>
+    <string name="tip_step">%1$d / %2$d</string>
+    <string name="tip_1">轻点角色是戳一戳。睡觉时轻点可以戳醒。</string>
+    <string name="tip_2">在头上来回滑动是摸头。按住并拖动可以把他提起。</string>
+    <string name="tip_3">快速甩动后松手会抛出，落地会头晕。右下角「动作」可以挥手、行走、跑步、跳舞或睡觉。</string>
+    <string name="tip_skip">跳过</string>
+    <string name="tip_next">下一步</string>
+    <string name="tip_done">知道了</string>
+    <string name="self_test_banner">本地自测：正在使用整页预览，不是拆分资源包。</string>
+</resources>

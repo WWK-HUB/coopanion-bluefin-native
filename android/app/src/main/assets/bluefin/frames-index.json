@@ -1,0 +1,1291 @@
+{
+  "id": "bluefin-native",
+  "version": "1.0.0",
+  "manifest": 2,
+  "api": 2,
+  "name": {
+    "zh": "蓝鳍 · 原画互动版",
+    "en": "Bluefin · Native Animation"
+  },
+  "poseCount": 64,
+  "assets": [
+    "neutral",
+    "talk",
+    "closed",
+    "wave_seed",
+    "smug",
+    "sit_happy",
+    "side",
+    "back",
+    "excited",
+    "happy",
+    "shy",
+    "thinking",
+    "angry",
+    "sad",
+    "cry",
+    "love",
+    "sit",
+    "prone",
+    "sleep",
+    "stretch",
+    "jump",
+    "crouch",
+    "lift_seed",
+    "fall",
+    "walk_0",
+    "walk_1",
+    "walk_2",
+    "walk_3",
+    "walk_4",
+    "walk_5",
+    "walk_6",
+    "walk_7",
+    "lift_0",
+    "lift_1",
+    "lift_2",
+    "lift_3",
+    "dizzy_0",
+    "dizzy_1",
+    "dizzy_2",
+    "dizzy_3",
+    "bow_0",
+    "bow_1",
+    "bow_2",
+    "bow_3",
+    "wave_0",
+    "wave_1",
+    "wave_2",
+    "wave_3",
+    "nod_0",
+    "nod_1",
+    "nod_2",
+    "nod_3",
+    "shake_0",
+    "shake_1",
+    "shake_2",
+    "shake_3",
+    "run_0",
+    "run_1",
+    "run_2",
+    "run_3",
+    "dance_0",
+    "dance_1",
+    "dance_2",
+    "dance_3"
+  ],
+  "poses": {
+    "neutral": {
+      "file": "assets/neutral.png",
+      "bytes": 166329,
+      "sourceBytes": 175342,
+      "width": 512,
+      "height": 512
+    },
+    "talk": {
+      "file": "assets/talk.png",
+      "bytes": 164957,
+      "sourceBytes": 174153,
+      "width": 512,
+      "height": 512
+    },
+    "closed": {
+      "file": "assets/closed.png",
+      "bytes": 168034,
+      "sourceBytes": 178038,
+      "width": 512,
+      "height": 512
+    },
+    "wave_seed": {
+      "file": "assets/wave_seed.png",
+      "bytes": 175390,
+      "sourceBytes": 185025,
+      "width": 512,
+      "height": 512
+    },
+    "smug": {
+      "file": "assets/smug.png",
+      "bytes": 188929,
+      "sourceBytes": 199314,
+      "width": 512,
+      "height": 512
+    },
+    "sit_happy": {
+      "file": "assets/sit_happy.png",
+      "bytes": 163354,
+      "sourceBytes": 173072,
+      "width": 512,
+      "height": 512
+    },
+    "side": {
+      "file": "assets/side.png",
+      "bytes": 167994,
+      "sourceBytes": 177971,
+      "width": 512,
+      "height": 512
+    },
+    "back": {
+      "file": "assets/back.png",
+      "bytes": 156687,
+      "sourceBytes": 167394,
+      "width": 512,
+      "height": 512
+    },
+    "excited": {
+      "file": "assets/excited.png",
+      "bytes": 187002,
+      "sourceBytes": 197017,
+      "width": 512,
+      "height": 512
+    },
+    "happy": {
+      "file": "assets/happy.png",
+      "bytes": 173818,
+      "sourceBytes": 183811,
+      "width": 512,
+      "height": 512
+    },
+    "shy": {
+      "file": "assets/shy.png",
+      "bytes": 156219,
+      "sourceBytes": 165505,
+      "width": 512,
+      "height": 512
+    },
+    "thinking": {
+      "file": "assets/thinking.png",
+      "bytes": 169738,
+      "sourceBytes": 179295,
+      "width": 512,
+      "height": 512
+    },
+    "angry": {
+      "file": "assets/angry.png",
+      "bytes": 178539,
+      "sourceBytes": 188378,
+      "width": 512,
+      "height": 512
+    },
+    "sad": {
+      "file": "assets/sad.png",
+      "bytes": 164631,
+      "sourceBytes": 174457,
+      "width": 512,
+      "height": 512
+    },
+    "cry": {
+      "file": "assets/cry.png",
+      "bytes": 177631,
+      "sourceBytes": 188073,
+      "width": 512,
+      "height": 512
+    },
+    "love": {
+      "file": "assets/love.png",
+      "bytes": 191046,
+      "sourceBytes": 202727,
+      "width": 512,
+      "height": 512
+    },
+    "sit": {
+      "file": "assets/sit.png",
+      "bytes": 145713,
+      "sourceBytes": 155206,
+      "width": 512,
+      "height": 512
+    },
+    "prone": {
+      "file": "assets/prone.png",
+      "bytes": 127724,
+      "sourceBytes": 135636,
+      "width": 512,
+      "height": 512
+    },
+    "sleep": {
+      "file": "assets/sleep.png",
+      "bytes": 116484,
+      "sourceBytes": 125019,
+      "width": 512,
+      "height": 512
+    },
+    "stretch": {
+      "file": "assets/stretch.png",
+      "bytes": 154720,
+      "sourceBytes": 163619,
+      "width": 512,
+      "height": 512
+    },
+    "jump": {
+      "file": "assets/jump.png",
+      "bytes": 163246,
+      "sourceBytes": 172318,
+      "width": 512,
+      "height": 512
+    },
+    "crouch": {
+      "file": "assets/crouch.png",
+      "bytes": 153773,
+      "sourceBytes": 163509,
+      "width": 512,
+      "height": 512
+    },
+    "lift_seed": {
+      "file": "assets/lift_seed.png",
+      "bytes": 174752,
+      "sourceBytes": 184879,
+      "width": 512,
+      "height": 512
+    },
+    "fall": {
+      "file": "assets/fall.png",
+      "bytes": 169696,
+      "sourceBytes": 178817,
+      "width": 512,
+      "height": 512
+    },
+    "walk_0": {
+      "file": "assets/walk_0.png",
+      "bytes": 152364,
+      "sourceBytes": 161833,
+      "width": 512,
+      "height": 512
+    },
+    "walk_1": {
+      "file": "assets/walk_1.png",
+      "bytes": 163646,
+      "sourceBytes": 173321,
+      "width": 512,
+      "height": 512
+    },
+    "walk_2": {
+      "file": "assets/walk_2.png",
+      "bytes": 153885,
+      "sourceBytes": 163733,
+      "width": 512,
+      "height": 512
+    },
+    "walk_3": {
+      "file": "assets/walk_3.png",
+      "bytes": 159669,
+      "sourceBytes": 168551,
+      "width": 512,
+      "height": 512
+    },
+    "walk_4": {
+      "file": "assets/walk_4.png",
+      "bytes": 161223,
+      "sourceBytes": 170692,
+      "width": 512,
+      "height": 512
+    },
+    "walk_5": {
+      "file": "assets/walk_5.png",
+      "bytes": 165742,
+      "sourceBytes": 175383,
+      "width": 512,
+      "height": 512
+    },
+    "walk_6": {
+      "file": "assets/walk_6.png",
+      "bytes": 157261,
+      "sourceBytes": 167130,
+      "width": 512,
+      "height": 512
+    },
+    "walk_7": {
+      "file": "assets/walk_7.png",
+      "bytes": 165173,
+      "sourceBytes": 174700,
+      "width": 512,
+      "height": 512
+    },
+    "lift_0": {
+      "file": "assets/lift_0.png",
+      "bytes": 181224,
+      "sourceBytes": 189873,
+      "width": 512,
+      "height": 512
+    },
+    "lift_1": {
+      "file": "assets/lift_1.png",
+      "bytes": 173823,
+      "sourceBytes": 182226,
+      "width": 512,
+      "height": 512
+    },
+    "lift_2": {
+      "file": "assets/lift_2.png",
+      "bytes": 177357,
+      "sourceBytes": 185674,
+      "width": 512,
+      "height": 512
+    },
+    "lift_3": {
+      "file": "assets/lift_3.png",
+      "bytes": 171751,
+      "sourceBytes": 180197,
+      "width": 512,
+      "height": 512
+    },
+    "dizzy_0": {
+      "file": "assets/dizzy_0.png",
+      "bytes": 172578,
+      "sourceBytes": 180869,
+      "width": 512,
+      "height": 512
+    },
+    "dizzy_1": {
+      "file": "assets/dizzy_1.png",
+      "bytes": 171757,
+      "sourceBytes": 179747,
+      "width": 512,
+      "height": 512
+    },
+    "dizzy_2": {
+      "file": "assets/dizzy_2.png",
+      "bytes": 173643,
+      "sourceBytes": 181670,
+      "width": 512,
+      "height": 512
+    },
+    "dizzy_3": {
+      "file": "assets/dizzy_3.png",
+      "bytes": 173790,
+      "sourceBytes": 181865,
+      "width": 512,
+      "height": 512
+    },
+    "bow_0": {
+      "file": "assets/bow_0.png",
+      "bytes": 156220,
+      "sourceBytes": 164510,
+      "width": 512,
+      "height": 512
+    },
+    "bow_1": {
+      "file": "assets/bow_1.png",
+      "bytes": 147669,
+      "sourceBytes": 155898,
+      "width": 512,
+      "height": 512
+    },
+    "bow_2": {
+      "file": "assets/bow_2.png",
+      "bytes": 139189,
+      "sourceBytes": 146934,
+      "width": 512,
+      "height": 512
+    },
+    "bow_3": {
+      "file": "assets/bow_3.png",
+      "bytes": 154632,
+      "sourceBytes": 163150,
+      "width": 512,
+      "height": 512
+    },
+    "wave_0": {
+      "file": "assets/wave_0.png",
+      "bytes": 159282,
+      "sourceBytes": 167331,
+      "width": 512,
+      "height": 512
+    },
+    "wave_1": {
+      "file": "assets/wave_1.png",
+      "bytes": 171539,
+      "sourceBytes": 180217,
+      "width": 512,
+      "height": 512
+    },
+    "wave_2": {
+      "file": "assets/wave_2.png",
+      "bytes": 169587,
+      "sourceBytes": 178404,
+      "width": 512,
+      "height": 512
+    },
+    "wave_3": {
+      "file": "assets/wave_3.png",
+      "bytes": 168605,
+      "sourceBytes": 176966,
+      "width": 512,
+      "height": 512
+    },
+    "nod_0": {
+      "file": "assets/nod_0.png",
+      "bytes": 180269,
+      "sourceBytes": 190365,
+      "width": 512,
+      "height": 512
+    },
+    "nod_1": {
+      "file": "assets/nod_1.png",
+      "bytes": 177913,
+      "sourceBytes": 189146,
+      "width": 512,
+      "height": 512
+    },
+    "nod_2": {
+      "file": "assets/nod_2.png",
+      "bytes": 169393,
+      "sourceBytes": 180273,
+      "width": 512,
+      "height": 512
+    },
+    "nod_3": {
+      "file": "assets/nod_3.png",
+      "bytes": 180225,
+      "sourceBytes": 190587,
+      "width": 512,
+      "height": 512
+    },
+    "shake_0": {
+      "file": "assets/shake_0.png",
+      "bytes": 179977,
+      "sourceBytes": 190826,
+      "width": 512,
+      "height": 512
+    },
+    "shake_1": {
+      "file": "assets/shake_1.png",
+      "bytes": 183254,
+      "sourceBytes": 193479,
+      "width": 512,
+      "height": 512
+    },
+    "shake_2": {
+      "file": "assets/shake_2.png",
+      "bytes": 178916,
+      "sourceBytes": 188834,
+      "width": 512,
+      "height": 512
+    },
+    "shake_3": {
+      "file": "assets/shake_3.png",
+      "bytes": 183063,
+      "sourceBytes": 193499,
+      "width": 512,
+      "height": 512
+    },
+    "run_0": {
+      "file": "assets/run_0.png",
+      "bytes": 181832,
+      "sourceBytes": 191732,
+      "width": 512,
+      "height": 512
+    },
+    "run_1": {
+      "file": "assets/run_1.png",
+      "bytes": 168741,
+      "sourceBytes": 178376,
+      "width": 512,
+      "height": 512
+    },
+    "run_2": {
+      "file": "assets/run_2.png",
+      "bytes": 176290,
+      "sourceBytes": 186269,
+      "width": 512,
+      "height": 512
+    },
+    "run_3": {
+      "file": "assets/run_3.png",
+      "bytes": 174367,
+      "sourceBytes": 184024,
+      "width": 512,
+      "height": 512
+    },
+    "dance_0": {
+      "file": "assets/dance_0.png",
+      "bytes": 195379,
+      "sourceBytes": 206584,
+      "width": 512,
+      "height": 512
+    },
+    "dance_1": {
+      "file": "assets/dance_1.png",
+      "bytes": 185693,
+      "sourceBytes": 196463,
+      "width": 512,
+      "height": 512
+    },
+    "dance_2": {
+      "file": "assets/dance_2.png",
+      "bytes": 196360,
+      "sourceBytes": 207480,
+      "width": 512,
+      "height": 512
+    },
+    "dance_3": {
+      "file": "assets/dance_3.png",
+      "bytes": 204686,
+      "sourceBytes": 215593,
+      "width": 512,
+      "height": 512
+    }
+  },
+  "sequences": {
+    "lift": {
+      "ids": [
+        "lift_0",
+        "lift_1",
+        "lift_2",
+        "lift_3"
+      ],
+      "files": [
+        "assets/lift_0.png",
+        "assets/lift_1.png",
+        "assets/lift_2.png",
+        "assets/lift_3.png"
+      ],
+      "bytes": 704155
+    },
+    "walk": {
+      "ids": [
+        "walk_0",
+        "walk_1",
+        "walk_2",
+        "walk_3",
+        "walk_4",
+        "walk_5",
+        "walk_6",
+        "walk_7"
+      ],
+      "files": [
+        "assets/walk_0.png",
+        "assets/walk_1.png",
+        "assets/walk_2.png",
+        "assets/walk_3.png",
+        "assets/walk_4.png",
+        "assets/walk_5.png",
+        "assets/walk_6.png",
+        "assets/walk_7.png"
+      ],
+      "bytes": 1278963
+    },
+    "dizzy": {
+      "ids": [
+        "dizzy_0",
+        "dizzy_1",
+        "dizzy_2",
+        "dizzy_3"
+      ],
+      "files": [
+        "assets/dizzy_0.png",
+        "assets/dizzy_1.png",
+        "assets/dizzy_2.png",
+        "assets/dizzy_3.png"
+      ],
+      "bytes": 691768
+    },
+    "run": {
+      "ids": [
+        "run_0",
+        "run_1",
+        "run_2",
+        "run_3"
+      ],
+      "files": [
+        "assets/run_0.png",
+        "assets/run_1.png",
+        "assets/run_2.png",
+        "assets/run_3.png"
+      ],
+      "bytes": 701230
+    },
+    "dance": {
+      "ids": [
+        "dance_0",
+        "dance_1",
+        "dance_2",
+        "dance_3"
+      ],
+      "files": [
+        "assets/dance_0.png",
+        "assets/dance_1.png",
+        "assets/dance_2.png",
+        "assets/dance_3.png"
+      ],
+      "bytes": 782118
+    },
+    "bow": {
+      "ids": [
+        "bow_0",
+        "bow_1",
+        "bow_2",
+        "bow_3"
+      ],
+      "files": [
+        "assets/bow_0.png",
+        "assets/bow_1.png",
+        "assets/bow_2.png",
+        "assets/bow_3.png"
+      ],
+      "bytes": 597710
+    },
+    "wave": {
+      "ids": [
+        "wave_0",
+        "wave_1",
+        "wave_2",
+        "wave_3"
+      ],
+      "files": [
+        "assets/wave_0.png",
+        "assets/wave_1.png",
+        "assets/wave_2.png",
+        "assets/wave_3.png"
+      ],
+      "bytes": 669013
+    },
+    "nod": {
+      "ids": [
+        "nod_0",
+        "nod_1",
+        "nod_2",
+        "nod_3"
+      ],
+      "files": [
+        "assets/nod_0.png",
+        "assets/nod_1.png",
+        "assets/nod_2.png",
+        "assets/nod_3.png"
+      ],
+      "bytes": 707800
+    },
+    "shake": {
+      "ids": [
+        "shake_0",
+        "shake_1",
+        "shake_2",
+        "shake_3"
+      ],
+      "files": [
+        "assets/shake_0.png",
+        "assets/shake_1.png",
+        "assets/shake_2.png",
+        "assets/shake_3.png"
+      ],
+      "bytes": 725210
+    }
+  },
+  "stills": [
+    "neutral",
+    "talk",
+    "closed",
+    "wave_seed",
+    "smug",
+    "sit_happy",
+    "side",
+    "back",
+    "excited",
+    "happy",
+    "shy",
+    "thinking",
+    "angry",
+    "sad",
+    "cry",
+    "love",
+    "sit",
+    "prone",
+    "sleep",
+    "stretch",
+    "jump",
+    "crouch",
+    "lift_seed",
+    "fall"
+  ],
+  "extras": [
+    {
+      "file": "assets/thumb.png",
+      "bytes": 50893,
+      "sourceBytes": 52919,
+      "width": 256,
+      "height": 256,
+      "note": "不在 figure.js ASSETS 中。thumb.png 是 figure.json 的缩略图。"
+    }
+  ],
+  "vocab": [
+    {
+      "id": "neutral",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "平静"
+        ]
+      }
+    },
+    {
+      "id": "happy",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "开心"
+        ]
+      }
+    },
+    {
+      "id": "wink",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "眨眼"
+        ]
+      }
+    },
+    {
+      "id": "love",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "喜欢"
+        ]
+      }
+    },
+    {
+      "id": "shy",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "害羞"
+        ]
+      }
+    },
+    {
+      "id": "surprised",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "惊讶"
+        ]
+      }
+    },
+    {
+      "id": "angry",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "生气"
+        ]
+      }
+    },
+    {
+      "id": "sad",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "难过"
+        ]
+      }
+    },
+    {
+      "id": "sleepy",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "犯困"
+        ]
+      }
+    },
+    {
+      "id": "thinking",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "思考"
+        ]
+      }
+    },
+    {
+      "id": "smug",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "得意"
+        ]
+      }
+    },
+    {
+      "id": "pout",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "嘟嘴"
+        ]
+      }
+    },
+    {
+      "id": "worried",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "担心"
+        ]
+      }
+    },
+    {
+      "id": "determined",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "认真"
+        ]
+      }
+    },
+    {
+      "id": "flustered",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "慌张"
+        ]
+      }
+    },
+    {
+      "id": "scared",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "害怕"
+        ]
+      }
+    },
+    {
+      "id": "excited",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "期待"
+        ]
+      }
+    },
+    {
+      "id": "cry",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "大哭"
+        ]
+      }
+    },
+    {
+      "id": "confused",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "疑惑"
+        ]
+      }
+    },
+    {
+      "id": "stand",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "站立"
+        ]
+      }
+    },
+    {
+      "id": "jump",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "跳跃"
+        ]
+      }
+    },
+    {
+      "id": "hop",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "蹦跳"
+        ]
+      }
+    },
+    {
+      "id": "look",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "张望"
+        ]
+      }
+    },
+    {
+      "id": "turn",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "转身"
+        ]
+      }
+    },
+    {
+      "id": "nod",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "点头"
+        ]
+      }
+    },
+    {
+      "id": "shake",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "摇头"
+        ]
+      }
+    },
+    {
+      "id": "spin",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "转圈"
+        ]
+      }
+    },
+    {
+      "id": "sit",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "坐下"
+        ]
+      },
+      "lasting": true
+    },
+    {
+      "id": "sleep",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "睡觉"
+        ]
+      },
+      "lasting": true
+    },
+    {
+      "id": "dizzy",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "头晕"
+        ]
+      }
+    },
+    {
+      "id": "walk",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "行走"
+        ]
+      }
+    },
+    {
+      "id": "run",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "跑步"
+        ]
+      }
+    },
+    {
+      "id": "wave",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "挥手"
+        ]
+      }
+    },
+    {
+      "id": "bow",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "鞠躬"
+        ]
+      }
+    },
+    {
+      "id": "shiver",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "发抖"
+        ]
+      }
+    },
+    {
+      "id": "flap",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "扑腾"
+        ]
+      }
+    },
+    {
+      "id": "dance",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "跳舞"
+        ]
+      }
+    },
+    {
+      "id": "hug",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "抱抱"
+        ]
+      }
+    },
+    {
+      "id": "prone",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "趴下"
+        ]
+      }
+    },
+    {
+      "id": "stretch",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "伸懒腰"
+        ]
+      }
+    }
+  ],
+  "p0": {
+    "poke": {
+      "poses": [
+        "happy",
+        "talk",
+        "jump",
+        "love",
+        "angry"
+      ],
+      "files": [
+        "assets/happy.png",
+        "assets/talk.png",
+        "assets/jump.png",
+        "assets/love.png",
+        "assets/angry.png"
+      ],
+      "note": "轻点：pointerdown 后在约 400ms 内 pointerup，且没有拖过提起阈值。引擎随机表情或蹦跳；睡觉或坐下时改为戳醒。这些是表情帧，没有单独的戳帧。"
+    },
+    "headPat": {
+      "poses": [
+        "love",
+        "shy"
+      ],
+      "files": [
+        "assets/love.png",
+        "assets/shy.png"
+      ],
+      "note": "摸头：未按住时 pointermove 在角色身上累计滑动，引擎在 love 与 shy 之间选择。触摸屏按下后移动超过约 6px 会变成提起，这是引擎原有规则。"
+    },
+    "lift": {
+      "poses": [
+        "lift_0",
+        "lift_1",
+        "lift_2",
+        "lift_3"
+      ],
+      "files": [
+        "assets/lift_0.png",
+        "assets/lift_1.png",
+        "assets/lift_2.png",
+        "assets/lift_3.png"
+      ],
+      "note": "按住拖动。selectFrame 在 mode=drag 时循环 lift_0..lift_3。"
+    },
+    "throwDizzy": {
+      "poses": [
+        "fall",
+        "dizzy_0",
+        "dizzy_1",
+        "dizzy_2",
+        "dizzy_3",
+        "sit",
+        "shake_0",
+        "shake_2",
+        "crouch",
+        "neutral"
+      ],
+      "files": [
+        "assets/fall.png",
+        "assets/dizzy_0.png",
+        "assets/dizzy_1.png",
+        "assets/dizzy_2.png",
+        "assets/dizzy_3.png",
+        "assets/sit.png",
+        "assets/shake_0.png",
+        "assets/shake_2.png",
+        "assets/crouch.png",
+        "assets/neutral.png"
+      ],
+      "note": "从提起状态松手进入抛出（air + thrown → fall）。重落地后 mode=dizzy：先 fall，再 dizzy_0..3，然后 sit、shake_0、shake_2、crouch、neutral。"
+    },
+    "wave": {
+      "poses": [
+        "wave_0",
+        "wave_1",
+        "wave_2",
+        "wave_3"
+      ],
+      "files": [
+        "assets/wave_0.png",
+        "assets/wave_1.png",
+        "assets/wave_2.png",
+        "assets/wave_3.png"
+      ],
+      "note": "词汇 wave。selectFrame 使用 wave_0..wave_3。"
+    },
+    "walk": {
+      "poses": [
+        "walk_0",
+        "walk_1",
+        "walk_2",
+        "walk_3",
+        "walk_4",
+        "walk_5",
+        "walk_6",
+        "walk_7"
+      ],
+      "files": [
+        "assets/walk_0.png",
+        "assets/walk_1.png",
+        "assets/walk_2.png",
+        "assets/walk_3.png",
+        "assets/walk_4.png",
+        "assets/walk_5.png",
+        "assets/walk_6.png",
+        "assets/walk_7.png"
+      ],
+      "note": "词汇 walk。面向右为 walk_0..walk_3，面向左为 walk_4..walk_7。"
+    },
+    "run": {
+      "poses": [
+        "run_0",
+        "run_1",
+        "run_2",
+        "run_3"
+      ],
+      "files": [
+        "assets/run_0.png",
+        "assets/run_1.png",
+        "assets/run_2.png",
+        "assets/run_3.png"
+      ],
+      "note": "词汇 run。selectFrame 循环 run_0..run_3。"
+    },
+    "dance": {
+      "poses": [
+        "dance_0",
+        "dance_1",
+        "dance_2",
+        "dance_3"
+      ],
+      "files": [
+        "assets/dance_0.png",
+        "assets/dance_1.png",
+        "assets/dance_2.png",
+        "assets/dance_3.png"
+      ],
+      "note": "词汇 dance。selectFrame 循环 dance_0..dance_3。"
+    },
+    "sleep": {
+      "poses": [
+        "sit",
+        "prone",
+        "sleep"
+      ],
+      "files": [
+        "assets/sit.png",
+        "assets/prone.png",
+        "assets/sleep.png"
+      ],
+      "note": "词汇 sleep。modeT 先 sit，再 prone，然后 sleep。"
+    },
+    "wake": {
+      "poses": [
+        "sleep",
+        "prone",
+        "sit",
+        "stretch",
+        "crouch",
+        "neutral",
+        "jump"
+      ],
+      "files": [
+        "assets/sleep.png",
+        "assets/prone.png",
+        "assets/sit.png",
+        "assets/stretch.png",
+        "assets/crouch.png",
+        "assets/neutral.png",
+        "assets/jump.png"
+      ],
+      "note": "睡觉时轻点进入 wake（引擎已有）。普通起身与受惊（face=surprised）两条 selectFrame 路径都覆盖。"
+    }
+  },
+  "gestures": {
+    "bow": {
+      "poses": [
+        "bow_0",
+        "bow_1",
+        "bow_2",
+        "bow_3"
+      ],
+      "files": [
+        "assets/bow_0.png",
+        "assets/bow_1.png",
+        "assets/bow_2.png",
+        "assets/bow_3.png"
+      ]
+    },
+    "nod": {
+      "poses": [
+        "nod_0",
+        "nod_1",
+        "nod_2",
+        "nod_3"
+      ],
+      "files": [
+        "assets/nod_0.png",
+        "assets/nod_1.png",
+        "assets/nod_2.png",
+        "assets/nod_3.png"
+      ]
+    },
+    "shake": {
+      "poses": [
+        "shake_1",
+        "shake_0",
+        "shake_2",
+        "shake_3"
+      ],
+      "files": [
+        "assets/shake_1.png",
+        "assets/shake_0.png",
+        "assets/shake_2.png",
+        "assets/shake_3.png"
+      ]
+    }
+  },
+  "sweptPoseCount": 62
+}

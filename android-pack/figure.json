@@ -1,0 +1,547 @@
+{
+  "manifest": 2,
+  "api": 2,
+  "id": "bluefin-native",
+  "version": "1.0.0",
+  "name": {
+    "zh": "蓝鳍 · 原画互动版",
+    "en": "Bluefin · Native Animation"
+  },
+  "about": {
+    "zh": "蓝发鲸鱼少年。64张透明原画帧，完整原生表情与动作；支持提起挣动、抛出跌落、坐倒摔晕、左右行走、跑步、趴睡及摸头反应。"
+  },
+  "author": "Custom character pack",
+  "entry": "figure.js",
+  "export": "createBluefin",
+  "thumb": "assets/thumb.png",
+  "axes": [],
+  "presets": [],
+  "vocab": [
+    {
+      "id": "neutral",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "平静"
+        ]
+      },
+      "about": {
+        "zh": "平静，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 3.2
+    },
+    {
+      "id": "happy",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "开心"
+        ]
+      },
+      "about": {
+        "zh": "开心，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 3.2
+    },
+    {
+      "id": "wink",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "眨眼"
+        ]
+      },
+      "about": {
+        "zh": "眨眼，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 3.2
+    },
+    {
+      "id": "love",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "喜欢"
+        ]
+      },
+      "about": {
+        "zh": "喜欢，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 3.2
+    },
+    {
+      "id": "shy",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "害羞"
+        ]
+      },
+      "about": {
+        "zh": "害羞，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 3.2
+    },
+    {
+      "id": "surprised",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "惊讶"
+        ]
+      },
+      "about": {
+        "zh": "惊讶，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 3.2
+    },
+    {
+      "id": "angry",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "生气"
+        ]
+      },
+      "about": {
+        "zh": "生气，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 3.2
+    },
+    {
+      "id": "sad",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "难过"
+        ]
+      },
+      "about": {
+        "zh": "难过，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 3.2
+    },
+    {
+      "id": "sleepy",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "犯困"
+        ]
+      },
+      "about": {
+        "zh": "犯困，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 3.2
+    },
+    {
+      "id": "thinking",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "思考"
+        ]
+      },
+      "about": {
+        "zh": "思考，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 3.2
+    },
+    {
+      "id": "smug",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "得意"
+        ]
+      },
+      "about": {
+        "zh": "得意，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 3.2
+    },
+    {
+      "id": "pout",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "嘟嘴"
+        ]
+      },
+      "about": {
+        "zh": "嘟嘴，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 3.2
+    },
+    {
+      "id": "worried",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "担心"
+        ]
+      },
+      "about": {
+        "zh": "担心，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 3.2
+    },
+    {
+      "id": "determined",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "认真"
+        ]
+      },
+      "about": {
+        "zh": "认真，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 3.2
+    },
+    {
+      "id": "flustered",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "慌张"
+        ]
+      },
+      "about": {
+        "zh": "慌张，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 3.2
+    },
+    {
+      "id": "scared",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "害怕"
+        ]
+      },
+      "about": {
+        "zh": "害怕，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 3.2
+    },
+    {
+      "id": "excited",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "期待"
+        ]
+      },
+      "about": {
+        "zh": "期待，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 3.2
+    },
+    {
+      "id": "cry",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "大哭"
+        ]
+      },
+      "about": {
+        "zh": "大哭，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 3.2
+    },
+    {
+      "id": "confused",
+      "kind": "expression",
+      "names": {
+        "zh": [
+          "疑惑"
+        ]
+      },
+      "about": {
+        "zh": "疑惑，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 3.2
+    },
+    {
+      "id": "stand",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "站立"
+        ]
+      },
+      "about": {
+        "zh": "站立，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8
+    },
+    {
+      "id": "jump",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "跳跃"
+        ]
+      },
+      "about": {
+        "zh": "跳跃，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8
+    },
+    {
+      "id": "hop",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "蹦跳"
+        ]
+      },
+      "about": {
+        "zh": "蹦跳，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8
+    },
+    {
+      "id": "look",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "张望"
+        ]
+      },
+      "about": {
+        "zh": "张望，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8
+    },
+    {
+      "id": "turn",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "转身"
+        ]
+      },
+      "about": {
+        "zh": "转身，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8
+    },
+    {
+      "id": "nod",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "点头"
+        ]
+      },
+      "about": {
+        "zh": "点头，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8
+    },
+    {
+      "id": "shake",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "摇头"
+        ]
+      },
+      "about": {
+        "zh": "摇头，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8
+    },
+    {
+      "id": "spin",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "转圈"
+        ]
+      },
+      "about": {
+        "zh": "转圈，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8
+    },
+    {
+      "id": "sit",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "坐下"
+        ]
+      },
+      "about": {
+        "zh": "坐下，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8,
+      "lasting": true
+    },
+    {
+      "id": "sleep",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "睡觉"
+        ]
+      },
+      "about": {
+        "zh": "睡觉，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8,
+      "lasting": true
+    },
+    {
+      "id": "dizzy",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "头晕"
+        ]
+      },
+      "about": {
+        "zh": "头晕，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8
+    },
+    {
+      "id": "walk",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "行走"
+        ]
+      },
+      "about": {
+        "zh": "行走，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8
+    },
+    {
+      "id": "run",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "跑步"
+        ]
+      },
+      "about": {
+        "zh": "跑步，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8
+    },
+    {
+      "id": "wave",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "挥手"
+        ]
+      },
+      "about": {
+        "zh": "挥手，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8
+    },
+    {
+      "id": "bow",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "鞠躬"
+        ]
+      },
+      "about": {
+        "zh": "鞠躬，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8
+    },
+    {
+      "id": "shiver",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "发抖"
+        ]
+      },
+      "about": {
+        "zh": "发抖，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8
+    },
+    {
+      "id": "flap",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "扑腾"
+        ]
+      },
+      "about": {
+        "zh": "扑腾，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8
+    },
+    {
+      "id": "dance",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "跳舞"
+        ]
+      },
+      "about": {
+        "zh": "跳舞，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8
+    },
+    {
+      "id": "hug",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "抱抱"
+        ]
+      },
+      "about": {
+        "zh": "抱抱，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8
+    },
+    {
+      "id": "prone",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "趴下"
+        ]
+      },
+      "about": {
+        "zh": "趴下，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8
+    },
+    {
+      "id": "stretch",
+      "kind": "motion",
+      "names": {
+        "zh": [
+          "伸懒腰"
+        ]
+      },
+      "about": {
+        "zh": "伸懒腰，以角色原画及配套动作帧呈现"
+      },
+      "seconds": 1.8
+    }
+  ],
+  "sounds": {},
+  "can": {
+    "walk": true
+  }
+}

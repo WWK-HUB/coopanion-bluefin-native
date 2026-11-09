@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>蓝鳍</title>
+<style>
+html{color-scheme:light}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:#edf1f8;color:#203354;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;overflow:hidden;overscroll-behavior:none}
+main{height:100%;height:100dvh;display:flex;flex-direction:column;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+#wrap{display:flex;flex-direction:column;flex:1 1 auto;min-width:0;min-height:0}
+header{flex:none;padding:8px 12px 4px}
+h1{font-size:17px;line-height:1.3;margin:0;font-weight:650}
+.sub{margin-top:2px;color:#647895;font-size:12px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#ver{margin-right:6px;color:#3d5c86}
+#stage{position:relative;flex:1 1 auto;min-height:0;overflow:hidden;background:linear-gradient(#dbe8fb,#f8fbff 75%);touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+#stage,#stage *{touch-action:none}
+#stage:after{content:"";position:absolute;left:0;right:0;bottom:40px;border-top:1px solid #b7cce7;pointer-events:none}
+#hint{position:absolute;z-index:2;top:10px;left:12px;right:12px;font-size:12px;line-height:1.45;color:#6681a4;pointer-events:none}
+#root{position:absolute;inset:0}
+#panel{flex:0 1 auto;max-height:34dvh;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding:8px 12px 12px;background:#fff}
+#status{font-size:13px;min-height:1.4em;margin:0 0 8px}
+.tools{display:flex;gap:6px}
+.tools button{flex:1}
+h2{font-size:13px;margin:10px 0 6px;color:#3d5c86}
+.buttons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+button{border:1px solid #cfdced;border-radius:9px;background:#f7faff;padding:8px 4px;min-height:40px;color:#24436b;font:inherit;font-size:13px;touch-action:manipulation}
+button.active,button:hover{background:#dbeaff;border-color:#6b9fe0}
+.notes{font-size:12px;line-height:1.6;color:#69809d;margin:8px 0 0}
+#events{margin-top:6px;font:11px/1.45 ui-monospace,Consolas,monospace;color:#54708e;white-space:pre-wrap;max-height:3.2em;overflow:hidden}
+canvas{image-rendering:auto}
+@media(min-width:720px){.buttons{grid-template-columns:repeat(6,minmax(0,1fr))}#panel{max-height:32dvh}}
+@media(orientation:landscape) and (max-height:520px){main{flex-direction:row}#panel{width:min(400px,48vw);max-height:none;height:100%}}
+</style>
+</head>
+<body>
+<main>
+  <div id="wrap">
+    <header>
+      <h1 id="title">蓝鳍</h1>
+      <div class="sub"><span id="ver"></span><span id="sub">正在载入原画…</span></div>
+    </header>
+    <div id="stage">
+      <div id="hint">轻点是戳一戳，按住拖动可提起，快速甩开会抛出。下方可选挥手、行走、跑步、跳舞和睡觉。</div>
+      <div id="root"></div>
+    </div>
+  </div>
+  <section id="panel">
+    <div id="status">正在载入原画…</div>
+    <div class="tools">
+      <button type="button" id="reset">恢复站立</button>
+      <button type="button" id="demo">连续演示</button>
+      <button type="button" id="pause">暂停</button>
+      <button type="button" id="size">切换大小</button>
+    </div>
+    <h2>表情</h2>
+    <div id="expressions" class="buttons"></div>
+    <h2>动作</h2>
+    <div id="motions" class="buttons"></div>
+    <p class="notes">轻点角色：戳一戳。未按住时在身上来回移动：摸头。按住拖动：提起挣动。快速甩开：抛出，重重落地会头晕。睡觉时轻点：戳醒。</p>
+    <div id="events"></div>
+  </section>
+</main>
+<script type="module">
+const stage = document.querySelector('#stage');
+const root = document.querySelector('#root');
+const events = [];
+let body = null;
+let paused = false;
+let compact = false;
+let manual = false;
+let scale = 1;
+let demoTimer = 0;
+
+function preferredScale() {
+  const h = stage.clientHeight;
+  const w = stage.clientWidth;
+  if (h < 40 || w < 40) return 1;
+  const s = Math.min((h - 28) / 262, (w - 12) / 190);
+  return Math.max(0.48, Math.min(1.35, Math.round(s * 100) / 100));
+}
+function smallerScale() {
+  return Math.max(0.42, Math.round(preferredScale() * 0.67 * 100) / 100);
+}
+function bounds() {
+  return { W: stage.clientWidth, H: stage.clientHeight, floorY: stage.clientHeight - 40, S: scale };
+}
+const imgs = new Map();
+function loadImage(u) {
+  if (!imgs.has(u)) {
+    imgs.set(u, new Promise((ok, bad) => {
+      const image = new Image();
+      image.onload = () => ok(image);
+      image.onerror = () => bad(new Error('无法加载 ' + u));
+      image.src = u;
+    }));
+  }
+  return imgs.get(u);
+}
+const asset = (p) => new URL(p, import.meta.url).href;
+
+function point(e) {
+  const rect = stage.getBoundingClientRect();
+  return { x: e.clientX - rect.left, y: e.clientY - rect.top, t: e.timeStamp };
+}
+stage.addEventListener('pointerdown', (e) => {
+  if (!body) return;
+  if (e.cancelable) e.preventDefault();
+  try { stage.setPointerCapture(e.pointerId); } catch (err) {}
+  body.pointer('down', point(e));
+}, { passive: false });
+stage.addEventListener('pointermove', (e) => {
+  if (!body) return;
+  if (e.cancelable) e.preventDefault();
+  body.pointer('move', point(e));
+}, { passive: false });
+stage.addEventListener('pointerup', (e) => {
+  if (!body) return;
+  body.pointer('up', point(e));
+}, { passive: false });
+stage.addEventListener('pointercancel', (e) => {
+  if (!body) return;
+  body.pointer('cancel', point(e));
+}, { passive: false });
+stage.addEventListener('pointerleave', (e) => {
+  if (!body) return;
+  body.pointer('leave', point(e));
+}, { passive: false });
+stage.addEventListener('contextmenu', (e) => e.preventDefault());
+
+function mark(id) {
+  document.querySelectorAll('button[data-word]').forEach((el) => {
+    el.classList.toggle('active', el.dataset.word === id);
+  });
+}
+function showStatus() {
+  const canvas = root.querySelector('canvas');
+  const pose = canvas && canvas.dataset.pose || '';
+  const mode = body ? body.layout().mode : '…';
+  document.querySelector('#status').textContent = body ? ('当前状态：' + mode + '　原画帧：' + pose) : '正在载入原画…';
+  document.querySelector('#events').textContent = events.slice(-3).map((e) => JSON.stringify(e)).join('\n');
+}
+
+async function main() {
+  let kit, mod, meta;
+  try {
+    [kit, mod] = await Promise.all([
+      import('./kit/body.js'),
+      import('./figure.js'),
+    ]);
+    const res = await fetch(new URL('./figure.json', import.meta.url));
+    if (!res.ok) throw new Error('figure.json HTTP ' + res.status);
+    meta = await res.json();
+  } catch (err) {
+    document.querySelector('#status').textContent = '载入失败：' + (err && err.message ? err.message : err);
+    console.error(err);
+    return;
+  }
+  document.title = (meta.name && meta.name.zh) || '蓝鳍';
+  document.querySelector('#title').textContent = document.title;
+  document.querySelector('#ver').textContent = meta.version ? ('v' + meta.version) : '';
+  document.querySelector('#sub').textContent = (meta.about && meta.about.zh) || '';
+  for (const word of meta.vocab || []) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = (word.names && word.names.zh && word.names.zh[0]) || word.id;
+    button.dataset.word = word.id;
+    button.addEventListener('click', () => {
+      if (!body) return;
+      clearInterval(demoTimer);
+      demoTimer = 0;
+      mark(word.id);
+      body.do(word.id);
+    });
+    const slot = word.kind === 'expression' ? '#expressions' : '#motions';
+    document.querySelector(slot).appendChild(button);
+  }
+
+  async function reset() {
+    clearInterval(demoTimer);
+    demoTimer = 0;
+    const previous = body;
+    body = null;
+    previous?.dispose();
+    events.length = 0;
+    scale = compact ? smallerScale() : preferredScale();
+    body = await mod.createBluefin(new URL('./', import.meta.url), {
+      kit,
+      host: {
+        root,
+        bounds,
+        emit(kind, detail) {
+          events.push({ kind, ...detail });
+          if (events.length > 120) events.shift();
+        },
+        sound() {},
+        start: { x: stage.clientWidth / 2, facing: 1 },
+      },
+      loadImage,
+      asset,
+    });
+    body.set({ roam: 'off' });
+    body.step(1 / 60);
+    showStatus();
+    return body;
+  }
+
+  window.qa = {
+    events,
+    get body() { return body; },
+    get meta() { return meta; },
+    manual(v) { manual = v; },
+    advance(n = 1) { for (let i = 0; i < n; i++) body.step(1 / 60); },
+    snapshot() {
+      return {
+        layout: body.layout(),
+        pose: (root.querySelector('canvas') || {}).dataset?.pose || '',
+        mode: body.layout().mode,
+        events: events.slice(),
+      };
+    },
+    reset,
+    ready: false,
+  };
+
+  document.querySelector('#reset').addEventListener('click', () => {
+    mark('');
+    reset().catch((err) => {
+      document.querySelector('#status').textContent = '载入失败：' + (err && err.message ? err.message : err);
+      console.error(err);
+    });
+  });
+  document.querySelector('#pause').addEventListener('click', (e) => {
+    paused = !paused;
+    e.currentTarget.textContent = paused ? '继续' : '暂停';
+  });
+  document.querySelector('#size').addEventListener('click', () => {
+    compact = !compact;
+    scale = compact ? smallerScale() : preferredScale();
+    if (body) body.resize();
+  });
+  document.querySelector('#demo').addEventListener('click', async () => {
+    if (!mod) return;
+    await reset();
+    let i = 0;
+    const seq = ['wave', 'walk', 'run', 'jump', 'nod', 'shake', 'bow', 'dance', 'sit', 'sleep', 'stand', 'dizzy', 'love', 'hug'];
+    const play = () => {
+      const id = seq[i % seq.length];
+      i += 1;
+      mark(id);
+      body.do(id);
+    };
+    play();
+    demoTimer = setInterval(play, 3800);
+  });
+  addEventListener('resize', () => {
+    scale = compact ? smallerScale() : preferredScale();
+    if (body) body.resize();
+  });
+  let prev = performance.now();
+  function tick(t) {
+    if (!paused && !manual && body) body.step(Math.min(0.04, (t - prev) / 1000));
+    prev = t;
+    if (body) showStatus();
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+  try {
+    await reset();
+  } catch (err) {
+    document.querySelector('#status').textContent = '载入失败：' + (err && err.message ? err.message : err);
+    console.error(err);
+    return;
+  }
+  window.qa.ready = true;
+}
+main();
+</script>
+</body>
+</html>

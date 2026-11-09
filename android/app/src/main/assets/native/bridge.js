@@ -69,13 +69,73 @@
     }
   }
 
-  function fitStage() {
-    if (document.getElementById("bluefin-native-fit")) return;
-    var style = document.createElement("style");
-    style.id = "bluefin-native-fit";
-    style.textContent = "#panel{padding-bottom:88px!important;box-sizing:border-box}";
-    document.head.appendChild(style);
+  // Stage box for the unchanged pack: width is the WebView (≥360 CSS px on phones),
+  // height is 220–290px so preferredScale lands in S≈0.7–1.0, and the pack's own
+  // floorY = stageHeight - 40 stays 40px above the stage bottom.
+  function stageHeight(sizeName) {
+    if (sizeName === "small") return 220;
+    if (sizeName === "large") return 290;
+    return 252;
   }
+
+  function fitStage() {
+    var style = document.getElementById("bluefin-native-fit");
+    if (!style) {
+      style = document.createElement("style");
+      style.id = "bluefin-native-fit";
+      document.head.appendChild(style);
+    }
+    style.textContent = [
+      "header{position:absolute;z-index:4;left:0;right:64px;top:0;pointer-events:none}",
+      "#panel{position:absolute!important;z-index:3;left:0;right:0;top:64px;max-height:32vh}",
+      "#stage{position:absolute!important;z-index:1;left:0;right:0;top:auto!important;",
+      "bottom:max(40px, env(safe-area-inset-bottom, 0px))!important;",
+      "width:auto!important;min-height:220px!important;min-width:100%!important;",
+      "height:" + stageHeight(window.__bluefinSize) + "px}"
+    ].join("");
+  }
+
+  function desiredRoam() {
+    if (window.__bluefinHidden || window.__bluefinRoam === "off") return "off";
+    return "free";
+  }
+
+  var boundBody = null;
+  function applyRoam(body) {
+    if (!body || typeof body.set !== "function") return;
+    var mode = desiredRoam();
+    body.set({ roam: mode });
+    boundBody = body;
+    if (typeof body.do !== "function" || !body.layout) return;
+    try {
+      var now = body.layout().mode;
+      if (mode === "free" && (!now || now === "idle")) body.do("walk");
+      if (mode === "off" && (now === "walk" || now === "run" || now === "sit" || now === "sleep")) body.do("stand");
+    } catch (err) {}
+  }
+
+  function applySize(sizeName) {
+    window.__bluefinSize = sizeName || "medium";
+    fitStage();
+    var stage = document.querySelector("#stage");
+    if (stage) stage.style.height = stageHeight(window.__bluefinSize) + "px";
+    window.dispatchEvent(new Event("resize"));
+  }
+
+  function applyPrefs(roamOn, sizeName, hidden) {
+    window.__bluefinHidden = !!hidden;
+    window.__bluefinRoam = roamOn ? "free" : "off";
+    var stage = document.querySelector("#stage");
+    if (stage) stage.style.visibility = hidden ? "hidden" : "visible";
+    if (window.qa && typeof window.qa.manual === "function") window.qa.manual(!!hidden);
+    applySize(sizeName || "medium");
+    applyRoam(window.qa && window.qa.body);
+  }
+
+  setInterval(function () {
+    var body = window.qa && window.qa.body;
+    if (body && body !== boundBody) applyRoam(body);
+  }, 300);
 
   // Finger contact always includes pointerdown, but the engine pets only on
   // move-without-press and turns a >6px drag into a lift. Classify first:
@@ -166,7 +226,8 @@
     reset: reset,
     ready: ready,
     setSound: setSound,
-    fitStage: fitStage
+    fitStage: fitStage,
+    applyPrefs: applyPrefs
   };
   window.__bluefinApplySound = setSound;
 })();

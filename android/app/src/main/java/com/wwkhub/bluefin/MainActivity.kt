@@ -1,11 +1,15 @@
 package com.wwkhub.bluefin
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import android.webkit.ConsoleMessage
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
@@ -39,6 +43,15 @@ class MainActivity : AppCompatActivity(), BluefinHost {
     private var pollGeneration = 0
     private var lastProblem: String? = null
     private var tipIndex = 0
+    private var roamOn = true
+    private var petHidden = false
+    private var petSize = "medium"
+
+    private val notificationPermission = registerForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { granted ->
+        if (granted) BluefinForegroundService.start(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +66,11 @@ class MainActivity : AppCompatActivity(), BluefinHost {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         soundOn = prefs().getBoolean(KEY_SOUND, true)
+        roamOn = prefs().getBoolean(KEY_ROAM, true)
+        petHidden = prefs().getBoolean(KEY_HIDDEN, false)
+        petSize = prefs().getString(KEY_SIZE, "medium") ?: "medium"
         applyInsets()
+        ensureForegroundService()
         setupWebView()
         binding.openActions.setOnClickListener { showActions() }
         binding.openSettings.setOnClickListener { showSettings() }
@@ -116,12 +133,8 @@ class MainActivity : AppCompatActivity(), BluefinHost {
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             val extra = (8 * resources.displayMetrics.density).toInt()
             binding.topBar.setPadding(bars.left + extra, bars.top + extra, bars.right + extra, 0)
-            binding.bottomChrome.setPadding(
-                bars.left + extra * 2,
-                extra,
-                bars.right + extra * 2,
-                bars.bottom + extra * 2,
-            )
+            val belowBar = bars.top + extra + (56 * resources.displayMetrics.density).toInt()
+            binding.bottomChrome.setPadding(bars.left + extra * 2, belowBar, bars.right + extra * 2, extra)
             insets
         }
     }
@@ -239,6 +252,7 @@ class MainActivity : AppCompatActivity(), BluefinHost {
         showStatus("", error = false)
         binding.statusOverlay.visibility = View.GONE
         binding.openActions.isEnabled = true
+        applyPetPrefs()
         if (!prefs().getBoolean(KEY_TIPS_DONE, false)) showTips()
     }
 
@@ -274,12 +288,44 @@ class MainActivity : AppCompatActivity(), BluefinHost {
         val dialog = BottomSheetDialog(this)
         val view = layoutInflater.inflate(R.layout.sheet_settings, null)
         val sound = view.findViewById<com.google.android.material.switchmaterial.SwitchMaterial>(R.id.sound_switch)
+        val roam = view.findViewById<com.google.android.material.switchmaterial.SwitchMaterial>(R.id.roam_switch)
+        val hide = view.findViewById<com.google.android.material.switchmaterial.SwitchMaterial>(R.id.hide_switch)
+        val sizes = view.findViewById<com.google.android.material.button.MaterialButtonToggleGroup>(R.id.size_group)
         val about = view.findViewById<android.widget.TextView>(R.id.about_body)
         sound.isChecked = soundOn
+        roam.isChecked = roamOn
+        hide.isChecked = petHidden
+        sizes.check(
+            when (petSize) {
+                "small" -> R.id.size_small
+                "large" -> R.id.size_large
+                else -> R.id.size_medium
+            },
+        )
         sound.setOnCheckedChangeListener { _, checked ->
             soundOn = checked
             prefs().edit().putBoolean(KEY_SOUND, checked).apply()
             applySound()
+        }
+        roam.setOnCheckedChangeListener { _, checked ->
+            roamOn = checked
+            prefs().edit().putBoolean(KEY_ROAM, checked).apply()
+            applyPetPrefs()
+        }
+        hide.setOnCheckedChangeListener { _, checked ->
+            petHidden = checked
+            prefs().edit().putBoolean(KEY_HIDDEN, checked).apply()
+            applyPetPrefs()
+        }
+        sizes.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (!isChecked) return@addOnButtonCheckedListener
+            petSize = when (checkedId) {
+                R.id.size_small -> "small"
+                R.id.size_large -> "large"
+                else -> "medium"
+            }
+            prefs().edit().putString(KEY_SIZE, petSize).apply()
+            applyPetPrefs()
         }
         about.text = getString(R.string.about, BuildConfig.VERSION_NAME)
         view.findViewById<View>(R.id.reset_button).setOnClickListener {
@@ -309,6 +355,28 @@ class MainActivity : AppCompatActivity(), BluefinHost {
             if (raw?.contains("missing") == true) binding.web.reload()
             showTips()
         }
+    }
+
+    private fun ensureForegroundService() {
+        if (Build.VERSION.SDK_INT >= 33) {
+            val granted = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+            if (granted == PackageManager.PERMISSION_GRANTED) {
+                BluefinForegroundService.start(this)
+            } else {
+                notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        } else {
+            BluefinForegroundService.start(this)
+        }
+    }
+
+    private fun applyPetPrefs() {
+        if (!::binding.isInitialized) return
+        val quoted = org.json.JSONObject.quote(petSize)
+        binding.web.evaluateJavascript(
+            "window.__bluefinNative&&window.__bluefinNative.applyPrefs($roamOn,$quoted,$petHidden)",
+            null,
+        )
     }
 
     private fun applySound() {
@@ -376,6 +444,9 @@ class MainActivity : AppCompatActivity(), BluefinHost {
         const val PREFS = "bluefin"
         const val KEY_TIPS_DONE = "tips_done"
         const val KEY_SOUND = "sound_on"
+        const val KEY_ROAM = "roam_on"
+        const val KEY_HIDDEN = "pet_hidden"
+        const val KEY_SIZE = "pet_size"
         const val READY_JS =
             "(function(){return !!(window.__bluefinNative&&window.__bluefinNative.ready&&window.__bluefinNative.ready());})()"
         const val RESET_JS =

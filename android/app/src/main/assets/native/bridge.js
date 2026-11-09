@@ -110,7 +110,7 @@
     try {
       var now = body.layout().mode;
       if (mode === "free" && (!now || now === "idle")) body.do("walk");
-      if (mode === "off" && (now === "walk" || now === "run" || now === "sit" || now === "sleep")) body.do("stand");
+      if (mode === "off" && !window.__bluefinAllowRest && (now === "walk" || now === "run" || now === "sit" || now === "sleep")) body.do("stand");
     } catch (err) {}
   }
 

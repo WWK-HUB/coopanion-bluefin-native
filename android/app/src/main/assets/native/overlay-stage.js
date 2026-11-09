@@ -1,7 +1,7 @@
 (function () {
   if (window.__bluefinOverlay) return;
 
-  var HOLD_MS = 180;
+  var HOLD_MS = 520;
   var LIFT_NET = 28;
   var PAT_PATH = 36;
   var PAT_NET = 24;

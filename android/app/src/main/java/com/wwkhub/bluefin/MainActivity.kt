@@ -3,7 +3,9 @@ package com.wwkhub.bluefin
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.provider.Settings
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -46,6 +48,7 @@ class MainActivity : AppCompatActivity(), BluefinHost {
     private var roamOn = true
     private var petHidden = false
     private var petSize = "medium"
+    private var pendingOverlayGuide = false
 
     private val notificationPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission(),
@@ -73,6 +76,7 @@ class MainActivity : AppCompatActivity(), BluefinHost {
         ensureForegroundService()
         setupWebView()
         binding.openActions.setOnClickListener { showActions() }
+        binding.openOverlay.setOnClickListener { OverlayLauncher.toggle(this) }
         binding.openSettings.setOnClickListener { showSettings() }
         binding.tipsSkip.setOnClickListener { finishTips() }
         binding.tipsNext.setOnClickListener { advanceTip() }
@@ -86,11 +90,26 @@ class MainActivity : AppCompatActivity(), BluefinHost {
         })
 
         loadEntry()
+        consumeOverlayIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        consumeOverlayIntent(intent)
     }
 
     override fun onResume() {
         super.onResume()
         if (::binding.isInitialized) binding.web.onResume()
+        OverlayLauncher.onResume(this)
+        if (pendingOverlayGuide) {
+            pendingOverlayGuide = false
+            window.decorView.post {
+                if (isFinishing || isDestroyed) return@post
+                if (Settings.canDrawOverlays(this)) OverlayLauncher.show(this) else OverlayLauncher.showGuide(this)
+            }
+        }
     }
 
     override fun onPause() {
@@ -290,11 +309,20 @@ class MainActivity : AppCompatActivity(), BluefinHost {
         val sound = view.findViewById<com.google.android.material.switchmaterial.SwitchMaterial>(R.id.sound_switch)
         val roam = view.findViewById<com.google.android.material.switchmaterial.SwitchMaterial>(R.id.roam_switch)
         val hide = view.findViewById<com.google.android.material.switchmaterial.SwitchMaterial>(R.id.hide_switch)
+        val overlay = view.findViewById<com.google.android.material.switchmaterial.SwitchMaterial>(R.id.overlay_switch)
         val sizes = view.findViewById<com.google.android.material.button.MaterialButtonToggleGroup>(R.id.size_group)
         val about = view.findViewById<android.widget.TextView>(R.id.about_body)
         sound.isChecked = soundOn
         roam.isChecked = roamOn
         hide.isChecked = petHidden
+        var overlaySync = false
+        val overlayListener = OverlayLauncher.Listener { showing ->
+            if (overlay.isChecked == showing) return@Listener
+            overlaySync = true
+            overlay.isChecked = showing
+            overlaySync = false
+        }
+        overlay.isChecked = OverlayLauncher.isShowing()
         sizes.check(
             when (petSize) {
                 "small" -> R.id.size_small
@@ -302,6 +330,25 @@ class MainActivity : AppCompatActivity(), BluefinHost {
                 else -> R.id.size_medium
             },
         )
+        overlay.setOnCheckedChangeListener { _, checked ->
+            if (overlaySync || checked == OverlayLauncher.isShowing()) return@setOnCheckedChangeListener
+            if (checked) {
+                if (!Settings.canDrawOverlays(this)) {
+                    overlaySync = true
+                    overlay.isChecked = false
+                    overlaySync = false
+                    OverlayLauncher.showGuide(this)
+                } else if (!OverlayLauncher.show(this)) {
+                    overlaySync = true
+                    overlay.isChecked = false
+                    overlaySync = false
+                }
+            } else {
+                OverlayLauncher.hide(this)
+            }
+        }
+        OverlayLauncher.addListener(overlayListener)
+        dialog.setOnDismissListener { OverlayLauncher.removeListener(overlayListener) }
         sound.setOnCheckedChangeListener { _, checked ->
             soundOn = checked
             prefs().edit().putBoolean(KEY_SOUND, checked).apply()
@@ -377,6 +424,7 @@ class MainActivity : AppCompatActivity(), BluefinHost {
             "window.__bluefinNative&&window.__bluefinNative.applyPrefs($roamOn,$quoted,$petHidden)",
             null,
         )
+        OverlayLauncher.sync(this)
     }
 
     private fun applySound() {
@@ -385,6 +433,13 @@ class MainActivity : AppCompatActivity(), BluefinHost {
             "window.__bluefinApplySound&&window.__bluefinApplySound($soundOn)",
             null,
         )
+        OverlayLauncher.sync(this)
+    }
+
+    private fun consumeOverlayIntent(source: Intent?) {
+        if (source?.action != OverlayLauncher.ACTION_OVERLAY_GUIDE) return
+        source.action = null
+        pendingOverlayGuide = true
     }
 
     private fun showTips() {
@@ -441,12 +496,12 @@ class MainActivity : AppCompatActivity(), BluefinHost {
     private companion object {
         const val TAG = "Bluefin"
         const val BRIDGE_NAME = "BluefinNative"
-        const val PREFS = "bluefin"
-        const val KEY_TIPS_DONE = "tips_done"
-        const val KEY_SOUND = "sound_on"
-        const val KEY_ROAM = "roam_on"
-        const val KEY_HIDDEN = "pet_hidden"
-        const val KEY_SIZE = "pet_size"
+        const val PREFS = BluefinStore.PREFS
+        const val KEY_TIPS_DONE = BluefinStore.KEY_TIPS_DONE
+        const val KEY_SOUND = BluefinStore.KEY_SOUND
+        const val KEY_ROAM = BluefinStore.KEY_ROAM
+        const val KEY_HIDDEN = BluefinStore.KEY_HIDDEN
+        const val KEY_SIZE = BluefinStore.KEY_SIZE
         const val READY_JS =
             "(function(){return !!(window.__bluefinNative&&window.__bluefinNative.ready&&window.__bluefinNative.ready());})()"
         const val RESET_JS =

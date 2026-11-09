@@ -22,6 +22,39 @@
             android:textStyle="bold" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/overlay_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:minHeight="48dp"
+            android:text="@string/overlay_switch"
+            android:textColor="@color/ink"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/overlay_switch_help"
+            android:textColor="@color/muted"
+            android:textSize="13sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/overlay_prompt_reset"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:minHeight="48dp"
+            android:text="@string/overlay_prompt_reset" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/overlay_prompt_reset_help"
+            android:textColor="@color/muted"
+            android:textSize="13sp" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/roam_switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
